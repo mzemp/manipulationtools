@@ -20,13 +20,14 @@ int main(int argc, char **argv) {
 
     int i, j;
     double xcen[3], dx[3], radius;
+    char outname[100], tempname1[100], tempname2[100];
     TIPSY_HEADER thin, thout;
     GAS_PARTICLE gp;
     DARK_PARTICLE dp;
     STAR_PARTICLE sp;
     ARRAY_HEADER ahin, ahout;
     ARRAY_PARTICLE ap;
-    FILE *file1, *file2, *fileindex;
+    FILE *fin1, *fin2, *fout1, *fout2;
     XDR xdrsin1, xdrsin2, xdrsout1, xdrsout2;
 
     /*
@@ -37,7 +38,6 @@ int main(int argc, char **argv) {
 	dx[j] = 0;
 	}
     radius = 0;
-    fileindex = NULL;
     /*
     ** Read in arguments
     */
@@ -99,12 +99,12 @@ int main(int argc, char **argv) {
 	    radius = atof(argv[i]);
 	    i++;
 	    }
-        else if (strcmp(argv[i],"-i") == 0) {
+        else if (strcmp(argv[i],"-o") == 0) {
             i++;
             if (i >= argc) {
                 usage();
                 }
-            fileindex = fopen(argv[i],"w");
+	    strcpy(outname,argv[i]);
             i++;
             }
 	else if ((strcmp(argv[i],"-h") == 0) || (strcmp(argv[i],"-help") == 0)) {
@@ -127,7 +127,6 @@ int main(int argc, char **argv) {
 	    assert(dx[j] == 0);
 	    }
 	}
-    assert(fileindex != NULL);
     /*
     ** Read in header
     */
@@ -136,19 +135,21 @@ int main(int argc, char **argv) {
     /*
     ** Write out temporary file to be replaced later
     */
-    file1 = fopen("temporary_file_1","w");
-    assert(file1 != NULL);
-    xdrstdio_create(&xdrsout1,file1,XDR_ENCODE);
+    sprintf(tempname1,"tf1_%s",outname);
+    fout1 = fopen(tempname1,"w");
+    assert(fout1 != NULL);
+    xdrstdio_create(&xdrsout1,fout1,XDR_ENCODE);
     thout.time = thin.time;
     thout.ntotal = 0;
     thout.ndim = thin.ndim;
     thout.ngas = 0;
     thout.ndark = 0;
     thout.nstar = 0;
-    write_tipsy_standard_header(&xdrsout1,&thout);
-    file2 = fopen("temporary_file_2","w");
-    assert(file2 != NULL);
-    xdrstdio_create(&xdrsout2,file2,XDR_ENCODE);
+    write_tipsy_standard_header(&xdrsout1,&thin);
+    sprintf(tempname2,"tf2_%s",outname);
+    fout2 = fopen(tempname2,"w");
+    assert(fout2 != NULL);
+    xdrstdio_create(&xdrsout2,fout2,XDR_ENCODE);
     ahout.N[0] = 0;
     ahout.N[1] = 1;
     ahout.N[2] = 0;
@@ -197,17 +198,25 @@ int main(int argc, char **argv) {
     ahout.N[0] = thout.ntotal;
     xdr_destroy(&xdrsin1);
     xdr_destroy(&xdrsout1);
-    fclose(file1);
-    fclose(file2);
+    fclose(fout1);
+    fclose(fout2);
     /*
     ** Now read temporary files again and correct header
     */
-    file1 = fopen("temporary_file_1","r");
-    file2 = fopen("temporary_file_2","r");
-    xdrstdio_create(&xdrsin1,file1,XDR_DECODE);
-    xdrstdio_create(&xdrsin2,file2,XDR_DECODE);
-    xdrstdio_create(&xdrsout1,stdout,XDR_ENCODE);
-    xdrstdio_create(&xdrsout2,fileindex,XDR_ENCODE);
+    fin1 = fopen(tempname1,"r");
+    assert(fin1 != NULL);
+    fin2 = fopen(tempname2,"r");
+    assert(fin2 != NULL);
+    xdrstdio_create(&xdrsin1,fin1,XDR_DECODE);
+    xdrstdio_create(&xdrsin2,fin2,XDR_DECODE);
+    sprintf(tempname1,"%s.std",outname);
+    fout1 = fopen(tempname1,"w");
+    assert(fout1 != NULL);
+    sprintf(tempname2,"%s.index.array.std",outname);
+    fout2 = fopen(tempname2,"w");
+    assert(fout2 != NULL);
+    xdrstdio_create(&xdrsout1,fout1,XDR_ENCODE);
+    xdrstdio_create(&xdrsout2,fout2,XDR_ENCODE);
     read_tipsy_standard_header(&xdrsin1,&thin);
     write_tipsy_standard_header(&xdrsout1,&thout);
     read_array_header(&xdrsin2,&ahin);
@@ -234,6 +243,10 @@ int main(int argc, char **argv) {
     xdr_destroy(&xdrsin2);
     xdr_destroy(&xdrsout1);
     xdr_destroy(&xdrsout2);
+    fclose(fin1);
+    fclose(fin2);
+    fclose(fout1);
+    fclose(fout2);
     fprintf(stderr,"Time: %g Ntotal: %d Ngas: %d Ndark: %d Nstar: %d Ndim: %d (input)\n",
 	    thin.time,thin.ntotal,thin.ngas,thin.ndark,thin.nstar,thin.ndim);
     fprintf(stderr,"Time: %g Ntotal: %d Ngas: %d Ndark: %d Nstar: %d Ndim: %d (output)\n",
@@ -252,8 +265,7 @@ void usage(void) {
     fprintf(stderr,"-dx <value>   : box side length in x-direction [LU] (default: 0 LU)\n");
     fprintf(stderr,"-dy <value>   : box side length in y-direction [LU] (default: 0 LU)\n");
     fprintf(stderr,"-dz <value>   : box side length in z-direction [LU] (default: 0 LU)\n");
-    fprintf(stderr,"-i <name>     : output index file\n");
+    fprintf(stderr,"-o <name>     : output name\n");
     fprintf(stderr,"< <name>      : input file in tipsy standard binary format\n");
-    fprintf(stderr,"> <name>      : output file in tipsy standard binary format\n");
     exit(1);
     }
