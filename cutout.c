@@ -19,7 +19,7 @@ void usage(void);
 int main(int argc, char **argv) {
 
     int i, j;
-    double xcen[3], dx[3], radius;
+    double xcen[3], dx[3], dxi[3], dxo[3], ri, ro;
     char outname[100], tempname1[100], tempname2[100];
     TIPSY_HEADER thin, thout;
     GAS_PARTICLE gp;
@@ -36,8 +36,11 @@ int main(int argc, char **argv) {
     for (j = 0; j < 3; j++) {
 	xcen[j] = 0;
 	dx[j] = 0;
+	dxi[j] = 0;
+	dxo[j] = 0;
 	}
-    radius = 0;
+    ri = 0;
+    ro = 0;
     /*
     ** Read in arguments
     */
@@ -67,36 +70,68 @@ int main(int argc, char **argv) {
 	    xcen[2] = atof(argv[i]);
 	    i++;
 	    }
-	else if (strcmp(argv[i],"-dx") == 0) {
+	else if (strcmp(argv[i],"-dxi") == 0) {
 	    i++;
 	    if (i >= argc) {
 		usage();
 		}
-	    dx[0] = atof(argv[i]);
+	    dxi[0] = atof(argv[i]);
 	    i++;
 	    }
-	else if (strcmp(argv[i],"-dy") == 0) {
+	else if (strcmp(argv[i],"-dyi") == 0) {
 	    i++;
 	    if (i >= argc) {
 		usage();
 		}
-	    dx[1] = atof(argv[i]);
+	    dxi[1] = atof(argv[i]);
 	    i++;
 	    }
-	else if (strcmp(argv[i],"-dz") == 0) {
+	else if (strcmp(argv[i],"-dzi") == 0) {
 	    i++;
 	    if (i >= argc) {
 		usage();
 		}
-	    dx[2] = atof(argv[i]);
+	    dxi[2] = atof(argv[i]);
 	    i++;
 	    }
-	else if (strcmp(argv[i],"-r") == 0) {
+	else if (strcmp(argv[i],"-dxo") == 0) {
 	    i++;
 	    if (i >= argc) {
 		usage();
 		}
-	    radius = atof(argv[i]);
+	    dxo[0] = atof(argv[i]);
+	    i++;
+	    }
+	else if (strcmp(argv[i],"-dyo") == 0) {
+	    i++;
+	    if (i >= argc) {
+		usage();
+		}
+	    dxo[1] = atof(argv[i]);
+	    i++;
+	    }
+	else if (strcmp(argv[i],"-dzo") == 0) {
+	    i++;
+	    if (i >= argc) {
+		usage();
+		}
+	    dxo[2] = atof(argv[i]);
+	    i++;
+	    }
+	else if (strcmp(argv[i],"-ri") == 0) {
+	    i++;
+	    if (i >= argc) {
+		usage();
+		}
+	    ri = atof(argv[i]);
+	    i++;
+	    }
+	else if (strcmp(argv[i],"-ro") == 0) {
+	    i++;
+	    if (i >= argc) {
+		usage();
+		}
+	    ro = atof(argv[i]);
 	    i++;
 	    }
         else if (strcmp(argv[i],"-o") == 0) {
@@ -117,14 +152,15 @@ int main(int argc, char **argv) {
     /*
     ** Check some things
     */
-    if (radius == 0) {
+    if ((ri == 0) && (ro == 0)) {
 	for (j = 0; j < 3; j++) {
-	    assert(dx[j] != 0);
+	    assert(dxo[j] != 0);
 	    }
 	}
     else {
 	for (j = 0; j < 3; j++) {
-	    assert(dx[j] == 0);
+	    assert(dxi[j] == 0);
+	    assert(dxo[j] == 0);
 	    }
 	}
     /*
@@ -159,12 +195,14 @@ int main(int argc, char **argv) {
     /*
     ** Check if particles are written out
     */
-    if (radius == 0) {
+    if ((ri == 0) && (ro == 0)) {
 	for (i = 0; i < thin.ngas; i++) {
 	    read_tipsy_standard_gas(&xdrsin1,&gp);
-	    if (fabs(gp.pos[0]-xcen[0]) <= dx[0]/2.0 &&
-		fabs(gp.pos[1]-xcen[1]) <= dx[1]/2.0 &&
-		fabs(gp.pos[2]-xcen[2]) <= dx[2]/2.0) {
+	    for (j = 0; j < 3; j++) {
+		dx[j] = fabs(gp.pos[j]-xcen[j]);
+		}
+	    if (((dx[0] < dxo[0]/2.0) && (dx[1] < dxo[1]/2.0) && (dx[2] < dxo[2]/2.0)) &&
+		!((dx[0] < dxi[0]/2.0) && (dx[1] < dxi[1]/2.0) && (dx[2] < dxi[2]/2.0))) {
 		thout.ngas++;
 		write_tipsy_standard_gas(&xdrsout1,&gp);
 		ap.ia[0] = 1+i;
@@ -173,9 +211,11 @@ int main(int argc, char **argv) {
 	    }
 	for (i = 0; i < thin.ndark; i++) {
 	    read_tipsy_standard_dark(&xdrsin1,&dp);
-	    if (fabs(dp.pos[0]-xcen[0]) <= dx[0]/2.0 &&
-		fabs(dp.pos[1]-xcen[1]) <= dx[1]/2.0 &&
-		fabs(dp.pos[2]-xcen[2]) <= dx[2]/2.0) {
+	    for (j = 0; j < 3; j++) {
+		dx[j] = fabs(dp.pos[j]-xcen[j]);
+		}
+	    if (((dx[0] < dxo[0]/2.0) && (dx[1] < dxo[1]/2.0) && (dx[2] < dxo[2]/2.0)) &&
+		!((dx[0] < dxi[0]/2.0) && (dx[1] < dxi[1]/2.0) && (dx[2] < dxi[2]/2.0))) {
 		thout.ndark++;
 		write_tipsy_standard_dark(&xdrsout1,&dp);
 		ap.ia[0] = thin.ngas+1+i;
@@ -184,9 +224,11 @@ int main(int argc, char **argv) {
 	    }
 	for (i = 0; i < thin.nstar; i++) {
 	    read_tipsy_standard_star(&xdrsin1,&sp);
-	    if (fabs(dp.pos[0]-xcen[0]) <= dx[0]/2.0 &&
-		fabs(dp.pos[1]-xcen[1]) <= dx[1]/2.0 &&
-		fabs(dp.pos[2]-xcen[2]) <= dx[2]/2.0) {
+	    for (j = 0; j < 3; j++) {
+		dx[j] = fabs(sp.pos[j]-xcen[j]);
+		}
+	    if (((dx[0] < dxo[0]/2.0) && (dx[1] < dxo[1]/2.0) && (dx[2] < dxo[2]/2.0)) &&
+		!((dx[0] < dxi[0]/2.0) && (dx[1] < dxi[1]/2.0) && (dx[2] < dxi[2]/2.0))) {
 		thout.nstar++;
 		write_tipsy_standard_star(&xdrsout1,&sp);
 		ap.ia[0] = thin.ngas+thin.ndark+1+i;
@@ -262,9 +304,12 @@ void usage(void) {
     fprintf(stderr,"-xcen <value> : x-coordinate of centre [LU] (default: 0 LU)\n");
     fprintf(stderr,"-ycen <value> : y-coordinate of centre [LU] (default: 0 LU)\n");
     fprintf(stderr,"-zcen <value> : z-coordinate of centre [LU] (default: 0 LU)\n");
-    fprintf(stderr,"-dx <value>   : box side length in x-direction [LU] (default: 0 LU)\n");
-    fprintf(stderr,"-dy <value>   : box side length in y-direction [LU] (default: 0 LU)\n");
-    fprintf(stderr,"-dz <value>   : box side length in z-direction [LU] (default: 0 LU)\n");
+    fprintf(stderr,"-dxi <value>  : inner box side length in x-direction [LU] (default: 0 LU)\n");
+    fprintf(stderr,"-dyi <value>  : inner box side length in y-direction [LU] (default: 0 LU)\n");
+    fprintf(stderr,"-dzi <value>  : inner box side length in z-direction [LU] (default: 0 LU)\n");
+    fprintf(stderr,"-dxo <value>  : outer box side length in x-direction [LU] (default: 0 LU)\n");
+    fprintf(stderr,"-dyo <value>  : outer box side length in y-direction [LU] (default: 0 LU)\n");
+    fprintf(stderr,"-dzo <value>  : outer box side length in z-direction [LU] (default: 0 LU)\n");
     fprintf(stderr,"-o <name>     : output name\n");
     fprintf(stderr,"< <name>      : input file in tipsy standard binary format\n");
     exit(1);
