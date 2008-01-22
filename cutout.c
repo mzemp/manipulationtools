@@ -19,7 +19,7 @@ void usage(void);
 int main(int argc, char **argv) {
 
     int i, j;
-    double xcen[3], dx[3], dxi[3], dxo[3], ri, ro;
+    double xcen[3], dx[3], dxi[3], dxo[3], r, ri, ro;
     char outname[100], tempname1[100], tempname2[100];
     TIPSY_HEADER thin, thout;
     GAS_PARTICLE gp;
@@ -39,6 +39,7 @@ int main(int argc, char **argv) {
 	dxi[j] = 0;
 	dxo[j] = 0;
 	}
+    r = 0;
     ri = 0;
     ro = 0;
     /*
@@ -236,6 +237,50 @@ int main(int argc, char **argv) {
 		}
 	    }
 	}
+    else {
+	for (i = 0; i < thin.ngas; i++) {
+	    read_tipsy_standard_gas(&xdrsin1,&gp);
+	    r = 0;
+	    for (j = 0; j < 3; j++) {
+		r += (gp.pos[j]-xcen[j])*(gp.pos[j]-xcen[j]);
+		}
+	    r = sqrt(r);
+	    if ((r < ro) && (r >= ri)) {
+		thout.ngas++;
+		write_tipsy_standard_gas(&xdrsout1,&gp);
+		ap.ia[0] = 1+i;
+		write_array_particle(&xdrsout2,&ahout,&ap);
+		}
+	    }
+	for (i = 0; i < thin.ndark; i++) {
+	    read_tipsy_standard_dark(&xdrsin1,&dp);
+	    r = 0;
+	    for (j = 0; j < 3; j++) {
+		r += (dp.pos[j]-xcen[j])*(dp.pos[j]-xcen[j]);
+		}
+	    r = sqrt(r);
+	    if ((r < ro) && (r >= ri)) {
+		thout.ndark++;
+		write_tipsy_standard_dark(&xdrsout1,&dp);
+		ap.ia[0] = thin.ngas+1+i;
+		write_array_particle(&xdrsout2,&ahout,&ap);
+		}
+	    }
+	for (i = 0; i < thin.nstar; i++) {
+	    read_tipsy_standard_star(&xdrsin1,&sp);
+	    r = 0;
+	    for (j = 0; j < 3; j++) {
+		r += (sp.pos[j]-xcen[j])*(sp.pos[j]-xcen[j]);
+		}
+	    r = sqrt(r);
+	    if ((r < ro) && (r >= ri)) {
+		thout.nstar++;
+		write_tipsy_standard_star(&xdrsout1,&sp);
+		ap.ia[0] = thin.ngas+thin.ndark+1+i;
+		write_array_particle(&xdrsout2,&ahout,&ap);
+		}
+	    }
+	}
     thout.ntotal = thout.ngas + thout.ndark + thout.nstar;
     ahout.N[0] = thout.ntotal;
     xdr_destroy(&xdrsin1);
@@ -310,6 +355,8 @@ void usage(void) {
     fprintf(stderr,"-dxo <value>  : outer box side length in x-direction [LU] (default: 0 LU)\n");
     fprintf(stderr,"-dyo <value>  : outer box side length in y-direction [LU] (default: 0 LU)\n");
     fprintf(stderr,"-dzo <value>  : outer box side length in z-direction [LU] (default: 0 LU)\n");
+    fprintf(stderr,"-ri <value>   : inner shell radius [LU] (default: 0 LU)\n");
+    fprintf(stderr,"-ro <value>   : outer shell radius [LU] (default: 0 LU)\n");
     fprintf(stderr,"-o <name>     : output name\n");
     fprintf(stderr,"< <name>      : input file in tipsy standard binary format\n");
     exit(1);
