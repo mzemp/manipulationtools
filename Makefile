@@ -5,11 +5,13 @@
 EXT	= 64
 BASE01	= compose
 BASE02	= cutout
+BASE03	= rotate
 EXE01	= $(BASE01)$(EXT)
 EXE02	= $(BASE02)$(EXT)
+EXE03	= $(BASE03)$(EXT)
 VERSION = 1.0
 
-TOOLS	= $(EXE01) $(EXE02)
+TOOLS	= $(EXE01) $(EXE02) $(EXE03)
 
 # Compiler stuff
 
@@ -21,6 +23,7 @@ LIBS	= -L$(LOCAL_LIB_PATH)/lib -lm -liof
 
 OBJ01	= $(BASE01).o
 OBJ02	= $(BASE02).o
+OBJ03	= $(BASE03).o
 
 # Rules
 
@@ -31,6 +34,9 @@ $(EXE01): $(OBJ01) Makefile
 
 $(EXE02): $(OBJ02) Makefile
 	$(CC) $(CFLAGS) $(OBJ02) -o $(EXE02) $(LIBS)
+
+$(EXE03): $(OBJ03) Makefile
+	$(CC) $(CFLAGS) $(OBJ03) -o $(EXE03) $(LIBS)
 
 clean:
 	-rm -f *.o *~ $(TOOLS)
