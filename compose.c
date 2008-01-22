@@ -68,7 +68,7 @@ int main(int argc, char **argv) {
 	    fp2 = fopen(argv[i],"r");
 	    i++;
 	    }
-	else if (strcmp(argv[i],"-dx1") == 0) {
+	else if (strcmp(argv[i],"-drx1") == 0) {
 	    i++;
 	    if (i >= argc) {
 		usage();
@@ -76,7 +76,7 @@ int main(int argc, char **argv) {
 	    dx1[0] = atof(argv[i]);
 	    i++;
 	    }
-	else if (strcmp(argv[i],"-dy1") == 0) {
+	else if (strcmp(argv[i],"-dry1") == 0) {
 	    i++;
 	    if (i >= argc) {
 		usage();
@@ -84,7 +84,7 @@ int main(int argc, char **argv) {
 	    dx1[1] = atof(argv[i]);
 	    i++;
 	    }
-	else if (strcmp(argv[i],"-dz1") == 0) {
+	else if (strcmp(argv[i],"-drz1") == 0) {
 	    i++;
 	    if (i >= argc) {
 		usage();
@@ -92,7 +92,7 @@ int main(int argc, char **argv) {
 	    dx1[2] = atof(argv[i]);
 	    i++;
 	    }
-	else if (strcmp(argv[i],"-dx2") == 0) {
+	else if (strcmp(argv[i],"-drx2") == 0) {
 	    i++;
 	    if (i >= argc) {
 		usage();
@@ -100,7 +100,7 @@ int main(int argc, char **argv) {
 	    dx2[0] = atof(argv[i]);
 	    i++;
 	    }
-	else if (strcmp(argv[i],"-dy2") == 0) {
+	else if (strcmp(argv[i],"-dry2") == 0) {
 	    i++;
 	    if (i >= argc) {
 		usage();
@@ -108,7 +108,7 @@ int main(int argc, char **argv) {
 	    dx2[1] = atof(argv[i]);
 	    i++;
 	    }
-	else if (strcmp(argv[i],"-dz2") == 0) {
+	else if (strcmp(argv[i],"-drz2") == 0) {
 	    i++;
 	    if (i >= argc) {
 		usage();
@@ -256,12 +256,12 @@ int main(int argc, char **argv) {
     fprintf(stderr,"Structure 1:\n");
     fprintf(stderr,"Time: %g Ntotal: %d Ngas: %d Ndark: %d Nstar: %d Ndim: %d\n",
 	    th1.time,th1.ntotal,th1.ngas,th1.ndark,th1.nstar,th1.ndim);
-    fprintf(stderr,"(dx1,dy1,dz1) = (%g,%g,%g) LU / (dvx1,dvy1,dvz1) = (%g,%g,%g) VU\n",
+    fprintf(stderr,"(drx1,dry1,drz1) = (%g,%g,%g) LU / (dvx1,dvy1,dvz1) = (%g,%g,%g) VU\n",
 	    dx1[0],dx1[1],dx1[2],dv1[0],dv1[1],dv1[2]);
     fprintf(stderr,"Structure 2:\n");
     fprintf(stderr,"Time: %g Ntotal: %d Ngas: %d Ndark: %d Nstar: %d Ndim: %d\n",
 	    th2.time,th2.ntotal,th2.ngas,th2.ndark,th2.nstar,th2.ndim);
-    fprintf(stderr,"(dx2,dy2,dz2) = (%g,%g,%g) LU / (dvx2,dvy2,dvz2) = (%g,%g,%g) VU\n",
+    fprintf(stderr,"(drx2,dry2,drz2) = (%g,%g,%g) LU / (dvx2,dvy2,dvz2) = (%g,%g,%g) VU\n",
 	    dx2[0],dx2[1],dx2[2],dv2[0],dv2[1],dv2[2]);
     fprintf(stderr,"Output:\n");
     fprintf(stderr,"Time: %g Ntotal: %d Ngas: %d Ndark: %d Nstar: %d Ndim: %d\n",
@@ -278,12 +278,12 @@ void usage(void) {
     fprintf(stderr,"You can specify the following arguments:\n\n");
     fprintf(stderr,"-f1 <name>    : name of input file 1 (Tipsy standard binary)\n");
     fprintf(stderr,"-f2 <name>    : name of input file 2 (Tipsy standard binary)\n");
-    fprintf(stderr,"-dx1 <value>  : distance shift along x-axis for file 1 (default: 0 LU)\n");
-    fprintf(stderr,"-dy1 <value>  : distance shift along y-axis for file 1 (default: 0 LU)\n");
-    fprintf(stderr,"-dz1 <value>  : distance shift along z-axis for file 1 (default: 0 LU)\n");
-    fprintf(stderr,"-dx2 <value>  : distance shift along x-axis for file 2 (default: 0 LU)\n");
-    fprintf(stderr,"-dy2 <value>  : distance shift along y-axis for file 2 (default: 0 LU)\n");
-    fprintf(stderr,"-dz2 <value>  : distance shift along z-axis for file 2 (default: 0 LU)\n");
+    fprintf(stderr,"-drx1 <value> : position shift along x-axis for file 1 (default: 0 LU)\n");
+    fprintf(stderr,"-dry1 <value> : position shift along y-axis for file 1 (default: 0 LU)\n");
+    fprintf(stderr,"-drz1 <value> : position shift along z-axis for file 1 (default: 0 LU)\n");
+    fprintf(stderr,"-drx2 <value> : position shift along x-axis for file 2 (default: 0 LU)\n");
+    fprintf(stderr,"-dry2 <value> : position shift along y-axis for file 2 (default: 0 LU)\n");
+    fprintf(stderr,"-drz2 <value> : position shift along z-axis for file 2 (default: 0 LU)\n");
     fprintf(stderr,"-dvx1 <value> : velocity shift along x-axis for file 1 (default: 0 VU)\n");
     fprintf(stderr,"-dvy1 <value> : velocity shift along y-axis for file 1 (default: 0 VU)\n");
     fprintf(stderr,"-dvz1 <value> : velocity shift along z-axis for file 1 (default: 0 VU)\n");

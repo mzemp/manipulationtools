@@ -47,7 +47,7 @@ int main(int argc, char **argv) {
     */
     i = 1;
     while (i < argc) {
-	if (strcmp(argv[i],"-xcen") == 0) {
+	if (strcmp(argv[i],"-rxcen") == 0) {
 	    i++;
 	    if (i >= argc) {
 		usage();
@@ -55,7 +55,7 @@ int main(int argc, char **argv) {
 	    xcen[0] = atof(argv[i]);
 	    i++;
 	    }
-	else if (strcmp(argv[i],"-ycen") == 0) {
+	else if (strcmp(argv[i],"-rycen") == 0) {
 	    i++;
 	    if (i >= argc) {
 		usage();
@@ -63,7 +63,7 @@ int main(int argc, char **argv) {
 	    xcen[1] = atof(argv[i]);
 	    i++;
 	    }
-	else if (strcmp(argv[i],"-zcen") == 0) {
+	else if (strcmp(argv[i],"-rzcen") == 0) {
 	    i++;
 	    if (i >= argc) {
 		usage();
@@ -71,7 +71,7 @@ int main(int argc, char **argv) {
 	    xcen[2] = atof(argv[i]);
 	    i++;
 	    }
-	else if (strcmp(argv[i],"-dxi") == 0) {
+	else if (strcmp(argv[i],"-drxi") == 0) {
 	    i++;
 	    if (i >= argc) {
 		usage();
@@ -79,7 +79,7 @@ int main(int argc, char **argv) {
 	    dxi[0] = atof(argv[i]);
 	    i++;
 	    }
-	else if (strcmp(argv[i],"-dyi") == 0) {
+	else if (strcmp(argv[i],"-dryi") == 0) {
 	    i++;
 	    if (i >= argc) {
 		usage();
@@ -87,7 +87,7 @@ int main(int argc, char **argv) {
 	    dxi[1] = atof(argv[i]);
 	    i++;
 	    }
-	else if (strcmp(argv[i],"-dzi") == 0) {
+	else if (strcmp(argv[i],"-drzi") == 0) {
 	    i++;
 	    if (i >= argc) {
 		usage();
@@ -103,7 +103,7 @@ int main(int argc, char **argv) {
 	    dxo[0] = atof(argv[i]);
 	    i++;
 	    }
-	else if (strcmp(argv[i],"-dyo") == 0) {
+	else if (strcmp(argv[i],"-dryo") == 0) {
 	    i++;
 	    if (i >= argc) {
 		usage();
@@ -111,7 +111,7 @@ int main(int argc, char **argv) {
 	    dxo[1] = atof(argv[i]);
 	    i++;
 	    }
-	else if (strcmp(argv[i],"-dzo") == 0) {
+	else if (strcmp(argv[i],"-drzo") == 0) {
 	    i++;
 	    if (i >= argc) {
 		usage();
@@ -346,18 +346,18 @@ void usage(void) {
     fprintf(stderr,"\n");
     fprintf(stderr,"Cutout cuts out regions from input file.\n\n");
     fprintf(stderr,"You can specify the following arguments:\n\n");
-    fprintf(stderr,"-xcen <value> : x-coordinate of centre [LU] (default: 0 LU)\n");
-    fprintf(stderr,"-ycen <value> : y-coordinate of centre [LU] (default: 0 LU)\n");
-    fprintf(stderr,"-zcen <value> : z-coordinate of centre [LU] (default: 0 LU)\n");
-    fprintf(stderr,"-dxi <value>  : inner box side length in x-direction [LU] (default: 0 LU)\n");
-    fprintf(stderr,"-dyi <value>  : inner box side length in y-direction [LU] (default: 0 LU)\n");
-    fprintf(stderr,"-dzi <value>  : inner box side length in z-direction [LU] (default: 0 LU)\n");
-    fprintf(stderr,"-dxo <value>  : outer box side length in x-direction [LU] (default: 0 LU)\n");
-    fprintf(stderr,"-dyo <value>  : outer box side length in y-direction [LU] (default: 0 LU)\n");
-    fprintf(stderr,"-dzo <value>  : outer box side length in z-direction [LU] (default: 0 LU)\n");
-    fprintf(stderr,"-ri <value>   : inner shell radius [LU] (default: 0 LU)\n");
-    fprintf(stderr,"-ro <value>   : outer shell radius [LU] (default: 0 LU)\n");
-    fprintf(stderr,"-o <name>     : output name\n");
-    fprintf(stderr,"< <name>      : input file in tipsy standard binary format\n");
+    fprintf(stderr,"-rxcen <value> : x-coordinate of centre [LU] (default: 0 LU)\n");
+    fprintf(stderr,"-rycen <value> : y-coordinate of centre [LU] (default: 0 LU)\n");
+    fprintf(stderr,"-rzcen <value> : z-coordinate of centre [LU] (default: 0 LU)\n");
+    fprintf(stderr,"-drxi <value>  : inner box side length in x-direction [LU] (default: 0 LU)\n");
+    fprintf(stderr,"-dryi <value>  : inner box side length in y-direction [LU] (default: 0 LU)\n");
+    fprintf(stderr,"-drzi <value>  : inner box side length in z-direction [LU] (default: 0 LU)\n");
+    fprintf(stderr,"-drxo <value>  : outer box side length in x-direction [LU] (default: 0 LU)\n");
+    fprintf(stderr,"-dryo <value>  : outer box side length in y-direction [LU] (default: 0 LU)\n");
+    fprintf(stderr,"-drzo <value>  : outer box side length in z-direction [LU] (default: 0 LU)\n");
+    fprintf(stderr,"-ri <value>    : inner shell radius [LU] (default: 0 LU)\n");
+    fprintf(stderr,"-ro <value>    : outer shell radius [LU] (default: 0 LU)\n");
+    fprintf(stderr,"-o <name>      : output name\n");
+    fprintf(stderr,"< <name>       : input file in tipsy standard binary format\n");
     exit(1);
     }
