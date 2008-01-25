@@ -231,7 +231,7 @@ int main(int argc, char **argv) {
 void usage(void) {
 
     fprintf(stderr,"\n");
-    fprintf(stderr,"Compose rotates the input structure around (0,0,0) according to the Euler angles phi, theta, psi\n");
+    fprintf(stderr,"Compose rotates the input structure around (0,0,0) according to the Euler angles phi, theta, psi.\n");
     fprintf(stderr,"Internally, a zxz rotation is done but you can also provide zyz Euler angles by setting the -zyz flag\n");
     fprintf(stderr,"and the code then converts it automatically to zxz Euler angles.\n\n");
     fprintf(stderr,"You can specify the following arguments:\n\n");
