@@ -30,11 +30,12 @@ void MatrixMultiplication(double R[3][3], double vin[3], double vout[3]) {
 
 int main(int argc, char **argv) {
 
-    int i, j, zxz, zyz;
+    int i, j;
+    int rotmode, rotdir;
     double phi, theta, psi;
     double cosphi, costheta, cospsi;
     double sinphi, sintheta, sinpsi;
-    double R[3][3], vin[3], vout[3];
+    double R[3][3], vin[3], vout[3], temp;
     TIPSY_HEADER th;
     GAS_PARTICLE gp;
     DARK_PARTICLE dp;
@@ -45,8 +46,8 @@ int main(int argc, char **argv) {
     ** Set default values
     */
 
-    zxz = 1;
-    zyz = 0;
+    rotmode = 0; /* zxz = 0, zyz = 1 */
+    rotdir = 1; /* forward = 0 backward = 1 */
     phi = 0;
     theta = 0;
     psi = 0;
@@ -58,13 +59,19 @@ int main(int argc, char **argv) {
     i = 1;
     while (i < argc) {
 	if (strcmp(argv[i],"-zxz") == 0) {
-	    zxz = 1;
-	    zyz = 0;
+	    rotmode = 0;
 	    i++;
 	    }
 	else if (strcmp(argv[i],"-zyz") == 0) {
-	    zxz = 0;
-	    zyz = 1;
+	    rotmode = 1;
+	    i++;
+	    }
+	else if (strcmp(argv[i],"-fwd") == 0) {
+	    rotdir = 0;
+	    i++;
+	    }
+	else if (strcmp(argv[i],"-bwd") == 0) {
+	    rotdir = 1;
 	    i++;
 	    }
 	else if (strcmp(argv[i],"-phi") == 0) {
@@ -132,7 +139,7 @@ int main(int argc, char **argv) {
     */
 
     assert((theta >= 0) && (theta <= M_PI));
-    if (zyz == 1) {
+    if (rotmode == 1) {
 	phi = phi - 3*M_PI/2.0;
 	psi = psi - M_PI/2.0;
 	}
@@ -155,6 +162,18 @@ int main(int argc, char **argv) {
     R[2][0] = sintheta*sinpsi;
     R[2][1] = sintheta*cospsi;
     R[2][2] = costheta;
+
+    if (rotdir == 1) {
+	temp = R[0][1];
+	R[0][1] = R[1][0];
+	R[1][0] = temp;
+	temp = R[0][2];
+	R[0][2] = R[2][0];
+	R[2][0] = temp;
+	temp = R[1][2];
+	R[1][2] = R[2][1];
+	R[2][1] = temp;
+	}
 
     /*
     ** Read in and write out header
@@ -231,16 +250,19 @@ int main(int argc, char **argv) {
 void usage(void) {
 
     fprintf(stderr,"\n");
-    fprintf(stderr,"Compose rotates the input structure around (0,0,0) according to the Euler angles phi, theta, psi.\n");
+    fprintf(stderr,"This program rotates the input structure around (0,0,0) according to the Euler angles phi, theta, psi.\n");
     fprintf(stderr,"Internally, a zxz rotation is done but you can also provide zyz Euler angles by setting the -zyz flag\n");
-    fprintf(stderr,"and the code then converts it automatically to zxz Euler angles.\n\n");
+    fprintf(stderr,"and the code then converts it automatically to zxz rotation Euler angles.\n\n");
     fprintf(stderr,"You can specify the following arguments:\n\n");
     fprintf(stderr,"-zxz                  : set this flag if your Euler angles are for a zxz rotation (default)\n");
     fprintf(stderr,"-zyz                  : set this flag if your Euler angles are for a zyz rotation\n");
+    fprintf(stderr,"-fwd                  : set this flag if your rotation is forwards (r => r''')\n");
+    fprintf(stderr,"-bwd                  : set this flag if your rotation is backwards (r''' => r) (default)\n");
     fprintf(stderr,"-phi <value> <unit>   : 1. Euler angle (default: 0 rad), <unit>: deg or rad (optional - default: rad)\n");
     fprintf(stderr,"-theta <value> <unit> : 2. Euler angle (default: 0 rad), <unit>: deg or rad (optional - default: rad)\n");
     fprintf(stderr,"-psi <value> <unit>   : 3. Euler angle (default: 0 rad), <unit>: deg or rad (optional - default: rad)\n");
     fprintf(stderr,"< <name>              : input file in tipsy standard binary format\n");
     fprintf(stderr,"> <name>              : output file in tipsy standard binary format\n");
+    fprintf(stderr,"\n");
     exit(1);
     }
