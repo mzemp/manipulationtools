@@ -7,13 +7,15 @@ BASE01	= compose
 BASE02	= cutout
 BASE03	= rotate
 BASE04	= extract
+BASE05	= scaleas
 EXE01	= $(BASE01)$(EXT)
 EXE02	= $(BASE02)$(EXT)
 EXE03	= $(BASE03)$(EXT)
 EXE04	= $(BASE04)$(EXT)
+EXE05	= $(BASE05)$(EXT)
 VERSION = 1.0
 
-TOOLS	= $(EXE01) $(EXE02) $(EXE03) $(EXE04)
+TOOLS	= $(EXE01) $(EXE02) $(EXE03) $(EXE04) $(EXE05)
 
 # Compiler stuff
 
@@ -27,6 +29,7 @@ OBJ01	= $(BASE01).o
 OBJ02	= $(BASE02).o
 OBJ03	= $(BASE03).o
 OBJ04	= $(BASE04).o
+OBJ05	= $(BASE05).o
 
 # Rules
 
@@ -43,6 +46,9 @@ $(EXE03): $(OBJ03) Makefile
 
 $(EXE04): $(OBJ04) Makefile
 	$(CC) $(CFLAGS) $(OBJ04) -o $(EXE04) $(LIBS)
+
+$(EXE05): $(OBJ05) Makefile
+	$(CC) $(CFLAGS) $(OBJ05) -o $(EXE05) $(LIBS)
 
 clean:
 	-rm -f *.o *~ $(TOOLS)
