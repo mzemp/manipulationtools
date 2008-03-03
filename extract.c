@@ -444,5 +444,6 @@ void usage(void) {
     fprintf(stderr,"-of <format>   : <format>: txt or ts\n");	       
     fprintf(stderr,"< <name>       : input file in tipsy standard binary format\n");
     fprintf(stderr,"> <name>       : output file in text format\n");
+    fprintf(stderr,"\n");
     exit(1);
     }

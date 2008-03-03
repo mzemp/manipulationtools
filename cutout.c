@@ -480,5 +480,6 @@ void usage(void) {
     fprintf(stderr,"-ro <value>    : outer shell radius [LU] (default: 0 LU)\n");
     fprintf(stderr,"-o <name>      : output name\n");
     fprintf(stderr,"< <name>       : input file in tipsy standard binary format\n");
+    fprintf(stderr,"\n");
     exit(1);
     }

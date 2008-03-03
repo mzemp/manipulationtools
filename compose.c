@@ -1,10 +1,7 @@
 /* 
 ** compose.c
 **
-** Program written in order to add two tipsy binary files with the possibility
-** to give each one a coordinate and velocity shift.
-**
-** written by Marcel Zemp, mzemp@ucolick.org, October 2007
+** written by Marcel Zemp
 */
 
 #include <stdio.h>
@@ -291,5 +288,6 @@ void usage(void) {
     fprintf(stderr,"-dvy2 <value> : velocity shift along y-axis for file 2 (default: 0 VU)\n");
     fprintf(stderr,"-dvz2 <value> : velocity shift along z-axis for file 2 (default: 0 VU)\n");
     fprintf(stderr,"> <name>      : name of outputfile (Tipsy standard binary)\n");
+    fprintf(stderr,"\n");
     exit(1);
     }
