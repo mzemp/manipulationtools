@@ -531,7 +531,7 @@ int main(int argc, char **argv) {
 void usage(void) {
 
     fprintf(stderr,"\n");
-    fprintf(stderr,"Program extracts particles if the index i staisfies (i+shift) mod delta == 0\n");
+    fprintf(stderr,"Program extracts particles if the index i satisfies (i+shift) mod delta == 0\n");
     fprintf(stderr,"and (optional) if the array value v of the particle satisfies: min <= v <= max.\n\n");
     fprintf(stderr,"You can specify the following arguments:\n\n");
     fprintf(stderr,"-spp             : set this flag if input and output file have single precision positions (default)\n");
