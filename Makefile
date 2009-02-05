@@ -1,7 +1,7 @@
 # Names
 
 NAME	= manipulationtools
-TOOLS	= compose cutout rotate extract scaleas
+TOOLS	= compose cutout rotate extract scaleas extractsingleparticle
 EXT	= 64
 VERSION = 1.0
 
