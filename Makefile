@@ -1,7 +1,8 @@
 # Names
 
 NAME	= manipulationtools
-TOOLS	= compose cutout rotate extract scaleas extractsingleparticle
+TOOLS	= compose cutout rotate extract scaleas \
+	extractsingleparticle refinementlevels
 EXT	= 64
 VERSION = 1.0
 
