@@ -3,7 +3,7 @@
 NAME	= manipulationtools
 TOOLS	= compose cutout rotate extract scaleas \
 	extractsingleparticle refinementlevels \
-	smoothrefinementlevels
+	smoothrefinementlevels creategrid
 EXT	= 64
 VERSION = 1.0
 

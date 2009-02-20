@@ -47,6 +47,7 @@ int main(int argc, char **argv) {
     int idummy;
     int positionprecision;
     int refinementtype;
+    int Lmax;
     int SizeGroupArray = 100, NGroupRead = 0;
     int *refinementlevel = NULL;
     float fdummy;
@@ -65,7 +66,7 @@ int main(int argc, char **argv) {
     FILE *statsfile, *statisticsfile, *groupsfile;
 
     positionprecision = 0; /* spp 0, dpp 1 */
-    refinementtype = 0;
+    refinementtype = 0; /* mark high-resolution region 0, mark in units of rvir 1 */
 
     /*
     ** Read in arguments
@@ -110,6 +111,14 @@ int main(int argc, char **argv) {
                 usage();
                 }
 	    refinementtype = atoi(argv[i]);
+            i++;
+            }
+        else if (strcmp(argv[i],"-Lmax") == 0) {
+            i++;
+            if (i >= argc) {
+                usage();
+                }
+	    Lmax = atoi(argv[i]);
             i++;
             }
         else if (strcmp(argv[i],"-d") == 0) {
@@ -245,63 +254,33 @@ int main(int argc, char **argv) {
 		r += (rz-group[j].rz)*(rz-group[j].rz);
 		r = sqrt(r);
 		if (refinementtype == 0) {
-		    if (r <= drvir*group[j].size) {
-			refinementlevel[i] = 3;
-			}
-		    else if ((r > drvir*group[j].size) && (r <= (drvir+1.0)*group[j].size)) {
-			if (refinementlevel[i] < 2) {
-			    refinementlevel[i] = 2;
-			    }
-			}
-		    else if ((r > (drvir+1.0)*group[j].size) && (r <= (drvir+2.0)*group[j].size)) {
-			if (refinementlevel[i] < 1) {
-			    refinementlevel[i] = 1;
-			    }
-			}
+		    if (r <= drvir*group[j].size) refinementlevel[i] = Lmax;
 		    }
 		else if (refinementtype == 1) {
-		    if (r <= 1*group[j].size) {
-			refinementlevel[i] = 1;
-			}
+		    if (r <= 1*group[j].size) refinementlevel[i] = 1;
 		    else if ((r > 1*group[j].size) && (r <= 2*group[j].size)) {
-			if (refinementlevel[i] > 2) {
-			    refinementlevel[i] = 2;
-			    }
+			if (refinementlevel[i] > 2) refinementlevel[i] = 2;
 			}
 		    else if ((r > 2*group[j].size) && (r <= 3*group[j].size)) {
-			if (refinementlevel[i] > 3) {
-			    refinementlevel[i] = 3;
-			    }
+			if (refinementlevel[i] > 3) refinementlevel[i] = 3;
 			}
 		    else if ((r > 3*group[j].size) && (r <= 4*group[j].size)) {
-			if (refinementlevel[i] > 4) {
-			    refinementlevel[i] = 4;
-			    }
+			if (refinementlevel[i] > 4) refinementlevel[i] = 4;
 			}
 		    else if ((r > 4*group[j].size) && (r <= 5*group[j].size)) {
-			if (refinementlevel[i] > 5) {
-			    refinementlevel[i] = 5;
-			    }
+			if (refinementlevel[i] > 5) refinementlevel[i] = 5;
 			}
 		    else if ((r > 5*group[j].size) && (r <= 6*group[j].size)) {
-			if (refinementlevel[i] > 6) {
-			    refinementlevel[i] = 6;
-			    }
+			if (refinementlevel[i] > 6) refinementlevel[i] = 6;
 			}
 		    else if ((r > 6*group[j].size) && (r <= 7*group[j].size)) {
-			if (refinementlevel[i] > 7) {
-			    refinementlevel[i] = 7;
-			    }
+			if (refinementlevel[i] > 7) refinementlevel[i] = 7;
 			}
 		    else if ((r > 7*group[j].size) && (r <= 8*group[j].size)) {
-			if (refinementlevel[i] > 8) {
-			    refinementlevel[i] = 8;
-			    }
+			if (refinementlevel[i] > 8) refinementlevel[i] = 8;
 			}
 		    else if ((r > 8*group[j].size) && (r <= 9*group[j].size)) {
-			if (refinementlevel[i] > 9) {
-			    refinementlevel[i] = 9;
-			    }
+			if (refinementlevel[i] > 9) refinementlevel[i] = 9;
 			}
 		    }
 		}
@@ -344,7 +323,8 @@ void usage(void) {
     fprintf(stderr,"-stats <name>      : stats file\n");
     fprintf(stderr,"-statistics <name> : statistics file\n");
     fprintf(stderr,"-groups <name>     : groups file\n");
-    fprintf(stderr,"-rt <value>        : refinement type: 0: high-resolution region given by d 1: particles have index according to distance to nearest group in units of rvir of that group\n");
+    fprintf(stderr,"-Lmax <value>      : maximum refinement level for rt=0 case\n");
+    fprintf(stderr,"-rt <value>        : refinement type: 0: high-resolution region given by d 1: particles have index according to distance to nearest group in units of rvir of that group (default: 0)\n");
     fprintf(stderr,"-d <value>         : size of high-resolution region in units of rvir (only for rt=0)\n");
     fprintf(stderr,"< <name>           : name of input file in tipsy standard binary format\n");
     fprintf(stderr,"> <name>           : name of output file in tipsy ascii array format\n");
