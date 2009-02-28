@@ -67,6 +67,8 @@ int main(int argc, char **argv) {
 
     positionprecision = 0; /* spp 0, dpp 1 */
     refinementtype = 0; /* mark high-resolution region 0, mark in units of rvir 1 */
+    Lmax = 0;
+    drvir = 3;
 
     /*
     ** Read in arguments
