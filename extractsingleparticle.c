@@ -31,6 +31,7 @@ int main(int argc, char **argv) {
     XDR xdrs;
 
     index = -1;
+    indextot = 0;
     positionprecision = 0;
     /*
     ** Read in arguments
@@ -99,12 +100,29 @@ int main(int argc, char **argv) {
     else if (positionprecision == 1) {
 	for (i = 0; i < th.ngas; i++) {
 	    read_tipsy_standard_gas_dpp(&xdrs,&gpdpp);
+	    indextot = i;
+	    if (index == indextot) {
+		fprintf(stdout,"r = (%+.14e, %+.14e, %+.14e) v = (%+.6e, %+.6e, %+.6e) m = %.6e eps = %.6e ID = %d  type: gas\n",
+			gpdpp.pos[0],gpdpp.pos[1],gpdpp.pos[2],gpdpp.vel[0],gpdpp.vel[1],gpdpp.vel[2],gpdpp.mass,gpdpp.hsmooth,indextot+1);
+		exit(0);
+		}
 	    }
 	for (i = 0; i < th.ndark; i++) {
 	    read_tipsy_standard_dark_dpp(&xdrs,&dpdpp);
+	    indextot = th.ngas+i;
+	    if (index == indextot) {
+		fprintf(stdout,"r = (%+.14e, %+.14e, %+.14e) v = (%+.6e, %+.6e, %+.6e) m = %.6e eps = %.6e ID = %d type: dark\n",
+			dpdpp.pos[0],dpdpp.pos[1],dpdpp.pos[2],dpdpp.vel[0],dpdpp.vel[1],dpdpp.vel[2],dpdpp.mass,dpdpp.eps,indextot+1);
+		exit(0);
+		}
 	    }
 	for (i = 0; i < th.nstar; i++) {
 	    read_tipsy_standard_star_dpp(&xdrs,&spdpp);
+	    if (index == indextot) {
+		fprintf(stdout,"r = (%+.14e, %+.14e, %+.14e) v = (%+.6e, %+.6e, %+.6e) m = %.6e eps = %.6e ID = %d type: star\n",
+			spdpp.pos[0],spdpp.pos[1],spdpp.pos[2],spdpp.vel[0],spdpp.vel[1],spdpp.vel[2],spdpp.mass,spdpp.eps,indextot+1);
+		exit(0);
+		}
 	    }
 	}
     exit(0);
@@ -115,10 +133,10 @@ void usage(void) {
     fprintf(stderr,"\n");
     fprintf(stderr,"Program extracts particles with index i and writes some info to stdout.\n\n");
     fprintf(stderr,"You can specify the following arguments:\n\n");
-    fprintf(stderr,"-spp             : set this flag if input and output file have single precision positions (default)\n");
-    fprintf(stderr,"-dpp             : set this flag if input and output file have double precision positions\n");
-    fprintf(stderr,"-index <type><n> : <type>: i (int), f (float) or d (double), <n> array index\n");
-    fprintf(stderr,"< <name>         : input file in tipsy standard binary format\n");
+    fprintf(stderr,"-spp       : set this flag if input and output file have single precision positions (default)\n");
+    fprintf(stderr,"-dpp       : set this flag if input and output file have double precision positions\n");
+    fprintf(stderr,"-index <i> : particle index\n");
+    fprintf(stderr,"< <name>   : input file in tipsy standard binary format\n");
     fprintf(stderr,"\n");
     exit(1);
     }
