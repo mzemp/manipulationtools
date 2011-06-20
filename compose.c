@@ -22,9 +22,9 @@ int main(int argc, char **argv) {
     double dx1[3], dx2[3], dv1[3], dv2[3], ang1[3], ang2[3];
     FILE *fp1, *fp2;
     TIPSY_HEADER th1, th2, thout;
-    GAS_PARTICLE gp;
-    DARK_PARTICLE dp;
-    STAR_PARTICLE sp;
+    TIPSY_GAS_PARTICLE gp;
+    TIPSY_DARK_PARTICLE dp;
+    TIPSY_STAR_PARTICLE sp;
     XDR xdr1, xdr2, xdrout;
 
     fp1 = NULL;
@@ -177,8 +177,8 @@ int main(int argc, char **argv) {
     assert(fp2 != NULL);
     xdrstdio_create(&xdr1,fp1,XDR_DECODE);
     xdrstdio_create(&xdr2,fp2,XDR_DECODE);
-    read_tipsy_standard_header(&xdr1,&th1);
-    read_tipsy_standard_header(&xdr2,&th2);
+    read_tipsy_xdr_header(&xdr1,&th1);
+    read_tipsy_xdr_header(&xdr2,&th2);
 
     /*
     ** Write out new header
@@ -191,59 +191,59 @@ int main(int argc, char **argv) {
     thout.ngas = th1.ngas + th2.ngas;
     thout.ndark = th1.ndark + th2.ndark;
     thout.nstar = th1.nstar + th2.nstar;
-    write_tipsy_standard_header(&xdrout,&thout);
+    write_tipsy_xdr_header(&xdrout,&thout);
 
     /*
     ** Add shifts to particles and write them out
     */
 
     for(i = 0; i < th1.ngas; i++) {
-	read_tipsy_standard_gas(&xdr1,&gp);
+	read_tipsy_xdr_gas(&xdr1,&gp);
 	for(j = 0; j < 3; j++) {
 	    gp.pos[j] = gp.pos[j]+dx1[j];
 	    gp.vel[j] = gp.vel[j]+dv1[j];
 	    }
-	write_tipsy_standard_gas(&xdrout,&gp);
+	write_tipsy_xdr_gas(&xdrout,&gp);
 	}
     for(i = 0; i < th2.ngas; i++) {
-	read_tipsy_standard_gas(&xdr2,&gp);
+	read_tipsy_xdr_gas(&xdr2,&gp);
 	for(j = 0; j < 3; j++) {
 	    gp.pos[j] = gp.pos[j]+dx2[j];
 	    gp.vel[j] = gp.vel[j]+dv2[j];
 	    }
-	write_tipsy_standard_gas(&xdrout,&gp);
+	write_tipsy_xdr_gas(&xdrout,&gp);
 	}
     for(i = 0; i < th1.ndark; i++) {
-	read_tipsy_standard_dark(&xdr1,&dp);
+	read_tipsy_xdr_dark(&xdr1,&dp);
 	for(j = 0; j < 3; j++) {
 	    dp.pos[j] = dp.pos[j]+dx1[j];
 	    dp.vel[j] = dp.vel[j]+dv1[j];
 	    }
-	write_tipsy_standard_dark(&xdrout,&dp);
+	write_tipsy_xdr_dark(&xdrout,&dp);
 	}
     for(i = 0; i < th2.ndark; i++) {
-	read_tipsy_standard_dark(&xdr2,&dp);
+	read_tipsy_xdr_dark(&xdr2,&dp);
 	for(j = 0; j < 3; j++) {
 	    dp.pos[j] = dp.pos[j]+dx2[j];
 	    dp.vel[j] = dp.vel[j]+dv2[j];
 	    }
-	write_tipsy_standard_dark(&xdrout,&dp);
+	write_tipsy_xdr_dark(&xdrout,&dp);
 	}
     for(i = 0; i < th1.nstar; i++) {
-	read_tipsy_standard_star(&xdr1,&sp);
+	read_tipsy_xdr_star(&xdr1,&sp);
 	for(j = 0; j < 3; j++) {
 	    sp.pos[j] = sp.pos[j]+dx1[j];
 	    sp.vel[j] = sp.vel[j]+dv1[j];
 	    }
-	write_tipsy_standard_star(&xdrout,&sp);
+	write_tipsy_xdr_star(&xdrout,&sp);
 	}
     for(i = 0; i < th2.nstar; i++) {
-	read_tipsy_standard_star(&xdr2,&sp);
+	read_tipsy_xdr_star(&xdr2,&sp);
 	for(j = 0; j < 3; j++) {
 	    sp.pos[j] = sp.pos[j]+dx2[j];
 	    sp.vel[j] = sp.vel[j]+dv2[j];
 	    }
-	write_tipsy_standard_star(&xdrout,&sp);
+	write_tipsy_xdr_star(&xdrout,&sp);
 	}
 
     xdr_destroy(&xdr1);

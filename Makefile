@@ -4,7 +4,7 @@ NAME	= manipulationtools
 TOOLS	= compose cutout rotate extract scaleas \
 	extractsingleparticle refinementlevels \
 	smoothrefinementlevels creategrid extractdistance
-EXT	= 64
+EXT	=
 VERSION = 1.0
 
 # Compiler stuff

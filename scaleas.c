@@ -87,11 +87,11 @@ int main(int argc, char **argv) {
 	}
     xdrstdio_create(&xdrsin,stdin,XDR_DECODE);
     xdrstdio_create(&xdrsout,stdout,XDR_ENCODE);
-    read_array_header(&xdrsin,&ah);
+    read_array_xdr_header(&xdrsin,&ah);
     allocate_array_particle(&ah,&ap);
-    write_array_header(&xdrsout,&ah);
+    write_array_xdr_header(&xdrsout,&ah);
     for (i = 0; i < ah.N[0]; i++) {
-	read_array_particle(&xdrsin,&ah,&ap);
+	read_array_xdr_particle(&xdrsin,&ah,&ap);
 	if (integerindex == 1) {
 	    ap.ia[index] = factorint*(ap.ia[index]+shiftint);
 	    }
@@ -101,7 +101,7 @@ int main(int argc, char **argv) {
 	else if (doubleindex == 1) {
 	    ap.da[index] = factor*(ap.da[index]+shift);
 	    }
-	write_array_particle(&xdrsout,&ah,&ap);
+	write_array_xdr_particle(&xdrsout,&ah,&ap);
 	}
     xdr_destroy(&xdrsin);
     xdr_destroy(&xdrsout);

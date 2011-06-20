@@ -23,7 +23,7 @@ int main(int argc, char **argv) {
     int NBox, Ntot;
     double LCell;
     TIPSY_HEADER th;
-    DARK_PARTICLE dp;
+    TIPSY_DARK_PARTICLE dp;
     XDR xdrs;
 
     verboselevel = 0;
@@ -70,7 +70,7 @@ int main(int argc, char **argv) {
     th.nstar = 0;
 
     xdrstdio_create(&xdrs,stdout,XDR_ENCODE);
-    write_tipsy_standard_header(&xdrs,&th);
+    write_tipsy_xdr_header(&xdrs,&th);
 
     /*
     ** Go through particles and find gaps in high-resolution region
@@ -85,7 +85,7 @@ int main(int argc, char **argv) {
 		dp.mass = 1;
 		dp.eps = 1;
 		dp.phi = 1;
-		write_tipsy_standard_dark(&xdrs,&dp);
+		write_tipsy_xdr_dark(&xdrs,&dp);
 		}
 	    }
 	}

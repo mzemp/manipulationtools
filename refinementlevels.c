@@ -26,19 +26,6 @@ typedef struct group {
     double rz;
     } GROUP;
 
-double correct_position(double c, double r, double l) {
-
-    if (c > 0.25*l && r < -0.25*l) {
-        return r + l;
-        }
-    else if (c < -0.25*l && r > 0.25*l) {
-        return r - l;
-        }
-    else {
-        return r;
-        }
-    }
-
 void usage(void);
 
 int main(int argc, char **argv) {
@@ -55,12 +42,12 @@ int main(int argc, char **argv) {
     char statsfilename[256], statisticsfilename[256], groupsfilename[256];
     double drvir;
     TIPSY_HEADER th;
-    GAS_PARTICLE gp;
-    DARK_PARTICLE dp;
-    STAR_PARTICLE sp;
-    GAS_PARTICLE_DPP gpdpp;
-    DARK_PARTICLE_DPP dpdpp;
-    STAR_PARTICLE_DPP spdpp;
+    TIPSY_GAS_PARTICLE gp;
+    TIPSY_DARK_PARTICLE dp;
+    TIPSY_STAR_PARTICLE sp;
+    TIPSY_GAS_PARTICLE_DPP gpdpp;
+    TIPSY_DARK_PARTICLE_DPP dpdpp;
+    TIPSY_STAR_PARTICLE_DPP spdpp;
     XDR xdrs;
     GROUP *group = NULL;
     FILE *statsfile, *statisticsfile, *groupsfile;
@@ -228,7 +215,7 @@ int main(int argc, char **argv) {
     ** Go through all particles in file and determine their refinement level
     */
     xdrstdio_create(&xdrs,stdin,XDR_DECODE);
-    read_tipsy_standard_header(&xdrs,&th);
+    read_tipsy_xdr_header(&xdrs,&th);
     assert(th.ngas == 0);
     assert(th.nstar == 0);
     assert(positionprecision == 0);
@@ -243,10 +230,10 @@ int main(int argc, char **argv) {
 	}
     if (positionprecision == 0) {
 	for (i = 0; i < th.ngas; i++) {
-	    read_tipsy_standard_gas(&xdrs,&gp);
+	    read_tipsy_xdr_gas(&xdrs,&gp);
 	    }
 	for (i = 0; i < th.ndark; i++) {
-	    read_tipsy_standard_dark(&xdrs,&dp);
+	    read_tipsy_xdr_dark(&xdrs,&dp);
 	    for (j = 0; j < NGroupRead; j++) {
 		rx = correct_position(group[j].rx,dp.pos[0],1);
 		ry = correct_position(group[j].ry,dp.pos[1],1);
@@ -288,18 +275,18 @@ int main(int argc, char **argv) {
 		}
 	    }
 	for (i = 0; i < th.nstar; i++) {
-	    read_tipsy_standard_star(&xdrs,&sp);
+	    read_tipsy_xdr_star(&xdrs,&sp);
 	    }
 	}
     else if (positionprecision == 1) {
 	for (i = 0; i < th.ngas; i++) {
-	    read_tipsy_standard_gas_dpp(&xdrs,&gpdpp);
+	    read_tipsy_xdr_gas_dpp(&xdrs,&gpdpp);
 	    }
 	for (i = 0; i < th.ndark; i++) {
-	    read_tipsy_standard_dark_dpp(&xdrs,&dpdpp);
+	    read_tipsy_xdr_dark_dpp(&xdrs,&dpdpp);
 	    }
 	for (i = 0; i < th.nstar; i++) {
-	    read_tipsy_standard_star_dpp(&xdrs,&spdpp);
+	    read_tipsy_xdr_star_dpp(&xdrs,&spdpp);
 	    }
 	}
     xdr_destroy(&xdrs);

@@ -28,12 +28,12 @@ int main(int argc, char **argv) {
     double min, max;
     char outname[100], tempname1[100], tempname2[100], arrayfilename[100];
     TIPSY_HEADER thin, thout;
-    GAS_PARTICLE gp;
-    DARK_PARTICLE dp;
-    STAR_PARTICLE sp;
-    GAS_PARTICLE_DPP gpdpp;
-    DARK_PARTICLE_DPP dpdpp;
-    STAR_PARTICLE_DPP spdpp;
+    TIPSY_GAS_PARTICLE gp;
+    TIPSY_DARK_PARTICLE dp;
+    TIPSY_STAR_PARTICLE sp;
+    TIPSY_GAS_PARTICLE_DPP gpdpp;
+    TIPSY_DARK_PARTICLE_DPP dpdpp;
+    TIPSY_STAR_PARTICLE_DPP spdpp;
     ARRAY_HEADER ahin, ahout;
     ARRAY_PARTICLE ap;
     FILE *fin1, *fin2, *fout1, *fout2;
@@ -176,7 +176,7 @@ int main(int argc, char **argv) {
     ** Read & write particles
     */
     xdrstdio_create(&xdrsin1,stdin,XDR_DECODE);
-    read_tipsy_standard_header(&xdrsin1,&thin);
+    read_tipsy_xdr_header(&xdrsin1,&thin);
     if (txtoutput == 1) {
 	sprintf(tempname1,"%s.extract.txt",outname);
 	fout1 = fopen(tempname1,"w");
@@ -199,13 +199,13 @@ int main(int argc, char **argv) {
 	thout.ngas = 0;
 	thout.ndark = 0;
 	thout.nstar = 0;
-	write_tipsy_standard_header(&xdrsout1,&thin);
+	write_tipsy_xdr_header(&xdrsout1,&thin);
 	}
     if (arrayfile == 1) {
         fin2 = fopen(arrayfilename,"r");
         assert(fin2 != NULL);
         xdrstdio_create(&xdrsin2,fin2,XDR_DECODE);
-        read_array_header(&xdrsin2,&ahin);
+        read_array_xdr_header(&xdrsin2,&ahin);
 	assert(ahin.N[0] == thin.ntotal);
 	/*
 	** Write out temporary file to be replaced later
@@ -219,14 +219,14 @@ int main(int argc, char **argv) {
 	ahout.N[2] = ahin.N[2];
 	ahout.N[3] = ahin.N[3];
 	allocate_array_particle(&ahout,&ap);
-	write_array_header(&xdrsout2,&ahout);
+	write_array_xdr_header(&xdrsout2,&ahout);
 	}
     if (positionprecision == 0) {
 	for (i = 0; i < thin.ngas; i++) {
-	    read_tipsy_standard_gas(&xdrsin1,&gp);
+	    read_tipsy_xdr_gas(&xdrsin1,&gp);
 	    arrayselection = 1;
 	    if (arrayfile == 1) {
-		read_array_particle(&xdrsin2,&ahin,&ap);
+		read_array_xdr_particle(&xdrsin2,&ahin,&ap);
 		arrayselection = 0;
 		if (integerindex == 1) {
 		    if ((ap.ia[index] <= maxint) && (ap.ia[index] >= minint)) {
@@ -251,19 +251,19 @@ int main(int argc, char **argv) {
 		    fprintf(fout1,"\n");
 		    }
 		else if (tsoutput == 1) {
-		    write_tipsy_standard_gas(&xdrsout1,&gp);
+		    write_tipsy_xdr_gas(&xdrsout1,&gp);
 		    if (arrayfile == 1) {
 			ahout.N[0]++;
-			write_array_particle(&xdrsout2,&ahout,&ap);
+			write_array_xdr_particle(&xdrsout2,&ahout,&ap);
 			}
 		    }
 		}
 	    }
 	for (i = 0; i < thin.ndark; i++) {
-	    read_tipsy_standard_dark(&xdrsin1,&dp);
+	    read_tipsy_xdr_dark(&xdrsin1,&dp);
 	    arrayselection = 1;
 	    if (arrayfile == 1) {
-		read_array_particle(&xdrsin2,&ahin,&ap);
+		read_array_xdr_particle(&xdrsin2,&ahin,&ap);
 		arrayselection = 0;
 		if (integerindex == 1) {
 		    if ((ap.ia[index] <= maxint) && (ap.ia[index] >= minint)) {
@@ -288,19 +288,19 @@ int main(int argc, char **argv) {
 		    fprintf(fout1,"\n");
 		    }
 		else if (tsoutput == 1) {
-		    write_tipsy_standard_dark(&xdrsout1,&dp);
+		    write_tipsy_xdr_dark(&xdrsout1,&dp);
 		    if (arrayfile == 1) {
 			ahout.N[0]++;
-			write_array_particle(&xdrsout2,&ahout,&ap);
+			write_array_xdr_particle(&xdrsout2,&ahout,&ap);
 			}
 		    }
 		}
 	    }
 	for (i = 0; i < thin.nstar; i++) {
-	    read_tipsy_standard_star(&xdrsin1,&sp);
+	    read_tipsy_xdr_star(&xdrsin1,&sp);
 	    arrayselection = 1;
 	    if (arrayfile == 1) {
-		read_array_particle(&xdrsin2,&ahin,&ap);
+		read_array_xdr_particle(&xdrsin2,&ahin,&ap);
 		arrayselection = 0;
 		if (integerindex == 1) {
 		    if ((ap.ia[index] <= maxint) && (ap.ia[index] >= minint)) {
@@ -325,10 +325,10 @@ int main(int argc, char **argv) {
 		    fprintf(fout1,"\n");
 		    }
 		else if (tsoutput == 1) {
-		    write_tipsy_standard_star(&xdrsout1,&sp);
+		    write_tipsy_xdr_star(&xdrsout1,&sp);
 		    if (arrayfile == 1) {
 			ahout.N[0]++;
-			write_array_particle(&xdrsout2,&ahout,&ap);
+			write_array_xdr_particle(&xdrsout2,&ahout,&ap);
 			}
 		    }
 		}
@@ -336,10 +336,10 @@ int main(int argc, char **argv) {
 	}
     else if (positionprecision == 1) {
 	for (i = 0; i < thin.ngas; i++) {
-	    read_tipsy_standard_gas_dpp(&xdrsin1,&gpdpp);
+	    read_tipsy_xdr_gas_dpp(&xdrsin1,&gpdpp);
 	    arrayselection = 1;
 	    if (arrayfile == 1) {
-		read_array_particle(&xdrsin2,&ahin,&ap);
+		read_array_xdr_particle(&xdrsin2,&ahin,&ap);
 		arrayselection = 0;
 		if (integerindex == 1) {
 		    if ((ap.ia[index] <= maxint) && (ap.ia[index] >= minint)) {
@@ -364,19 +364,19 @@ int main(int argc, char **argv) {
 		    fprintf(fout1,"\n");
 		    }
 		else if (tsoutput == 1) {
-		    write_tipsy_standard_gas_dpp(&xdrsout1,&gpdpp);
+		    write_tipsy_xdr_gas_dpp(&xdrsout1,&gpdpp);
 		    if (arrayfile == 1) {
 			ahout.N[0]++;
-			write_array_particle(&xdrsout2,&ahout,&ap);
+			write_array_xdr_particle(&xdrsout2,&ahout,&ap);
 			}
 		    }
 		}
 	    }
 	for (i = 0; i < thin.ndark; i++) {
-	    read_tipsy_standard_dark_dpp(&xdrsin1,&dpdpp);
+	    read_tipsy_xdr_dark_dpp(&xdrsin1,&dpdpp);
 	    arrayselection = 1;
 	    if (arrayfile == 1) {
-		read_array_particle(&xdrsin2,&ahin,&ap);
+		read_array_xdr_particle(&xdrsin2,&ahin,&ap);
 		arrayselection = 0;
 		if (integerindex == 1) {
 		    if ((ap.ia[index] <= maxint) && (ap.ia[index] >= minint)) {
@@ -401,19 +401,19 @@ int main(int argc, char **argv) {
 		    fprintf(fout1,"\n");
 		    }
 		else if (tsoutput == 1) {
-		    write_tipsy_standard_dark_dpp(&xdrsout1,&dpdpp);
+		    write_tipsy_xdr_dark_dpp(&xdrsout1,&dpdpp);
 		    if (arrayfile == 1) {
 			ahout.N[0]++;
-			write_array_particle(&xdrsout2,&ahout,&ap);
+			write_array_xdr_particle(&xdrsout2,&ahout,&ap);
 			}
 		    }
 		}
 	    }
 	for (i = 0; i < thin.nstar; i++) {
-	    read_tipsy_standard_star_dpp(&xdrsin1,&spdpp);
+	    read_tipsy_xdr_star_dpp(&xdrsin1,&spdpp);
 	    arrayselection = 1;
 	    if (arrayfile == 1) {
-		read_array_particle(&xdrsin2,&ahin,&ap);
+		read_array_xdr_particle(&xdrsin2,&ahin,&ap);
 		arrayselection = 0;
 		if (integerindex == 1) {
 		    if ((ap.ia[index] <= maxint) && (ap.ia[index] >= minint)) {
@@ -438,10 +438,10 @@ int main(int argc, char **argv) {
 		    fprintf(fout1,"\n");
 		    }
 		else if (tsoutput == 1) {
-		    write_tipsy_standard_star_dpp(&xdrsout1,&spdpp);
+		    write_tipsy_xdr_star_dpp(&xdrsout1,&spdpp);
 		    if (arrayfile == 1) {
 			ahout.N[0]++;
-			write_array_particle(&xdrsout2,&ahout,&ap);
+			write_array_xdr_particle(&xdrsout2,&ahout,&ap);
 			}
 		    }
 		}
@@ -479,19 +479,19 @@ int main(int argc, char **argv) {
 	fout1 = fopen(tempname1,"w");
 	assert(fout1 != NULL);
 	xdrstdio_create(&xdrsout1,fout1,XDR_ENCODE);
-	read_tipsy_standard_header(&xdrsin1,&thin);
-	write_tipsy_standard_header(&xdrsout1,&thout);
+	read_tipsy_xdr_header(&xdrsin1,&thin);
+	write_tipsy_xdr_header(&xdrsout1,&thout);
 	for (i = 0; i < thout.ngas; i++) { 
-	    read_tipsy_standard_gas(&xdrsin1,&gp);
-	    write_tipsy_standard_gas(&xdrsout1,&gp);
+	    read_tipsy_xdr_gas(&xdrsin1,&gp);
+	    write_tipsy_xdr_gas(&xdrsout1,&gp);
 	    }
 	for (i = 0; i < thout.ndark; i++) {
-	    read_tipsy_standard_dark(&xdrsin1,&dp);
-	    write_tipsy_standard_dark(&xdrsout1,&dp);
+	    read_tipsy_xdr_dark(&xdrsin1,&dp);
+	    write_tipsy_xdr_dark(&xdrsout1,&dp);
 	    }
 	for (i = 0; i < thout.nstar; i++) {
-	    read_tipsy_standard_star(&xdrsin1,&sp);
-	    write_tipsy_standard_star(&xdrsout1,&sp);
+	    read_tipsy_xdr_star(&xdrsin1,&sp);
+	    write_tipsy_xdr_star(&xdrsout1,&sp);
 	    }
 	xdr_destroy(&xdrsin1);
 	xdr_destroy(&xdrsout1);
@@ -505,19 +505,19 @@ int main(int argc, char **argv) {
 	    fout2 = fopen(tempname2,"w");
 	    assert(fout2 != NULL);
 	    xdrstdio_create(&xdrsout2,fout2,XDR_ENCODE);
-	    read_array_header(&xdrsin2,&ahin);
-	    write_array_header(&xdrsout2,&ahout);
+	    read_array_xdr_header(&xdrsin2,&ahin);
+	    write_array_xdr_header(&xdrsout2,&ahout);
 	    for (i = 0; i < thout.ngas; i++) { 
-		read_array_particle(&xdrsin2,&ahout,&ap);
-		write_array_particle(&xdrsout2,&ahout,&ap);
+		read_array_xdr_particle(&xdrsin2,&ahout,&ap);
+		write_array_xdr_particle(&xdrsout2,&ahout,&ap);
 		}
 	    for (i = 0; i < thout.ndark; i++) {
-		read_array_particle(&xdrsin2,&ahout,&ap);
-		write_array_particle(&xdrsout2,&ahout,&ap);
+		read_array_xdr_particle(&xdrsin2,&ahout,&ap);
+		write_array_xdr_particle(&xdrsout2,&ahout,&ap);
 		}
 	    for (i = 0; i < thout.nstar; i++) {
-		read_array_particle(&xdrsin2,&ahout,&ap);
-		write_array_particle(&xdrsout2,&ahout,&ap);
+		read_array_xdr_particle(&xdrsin2,&ahout,&ap);
+		write_array_xdr_particle(&xdrsout2,&ahout,&ap);
 		}
 	    xdr_destroy(&xdrsin2);
 	    xdr_destroy(&xdrsout2);

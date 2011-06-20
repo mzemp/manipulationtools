@@ -22,12 +22,12 @@ int main(int argc, char **argv) {
     int index, indextot;
     int positionprecision;
     TIPSY_HEADER th;
-    GAS_PARTICLE gp;
-    DARK_PARTICLE dp;
-    STAR_PARTICLE sp;
-    GAS_PARTICLE_DPP gpdpp;
-    DARK_PARTICLE_DPP dpdpp;
-    STAR_PARTICLE_DPP spdpp;
+    TIPSY_GAS_PARTICLE gp;
+    TIPSY_DARK_PARTICLE dp;
+    TIPSY_STAR_PARTICLE sp;
+    TIPSY_GAS_PARTICLE_DPP gpdpp;
+    TIPSY_DARK_PARTICLE_DPP dpdpp;
+    TIPSY_STAR_PARTICLE_DPP spdpp;
     XDR xdrs;
 
     index = -1;
@@ -66,11 +66,11 @@ int main(int argc, char **argv) {
     ** Read & write particles
     */
     xdrstdio_create(&xdrs,stdin,XDR_DECODE);
-    read_tipsy_standard_header(&xdrs,&th);
+    read_tipsy_xdr_header(&xdrs,&th);
     assert(index < th.ntotal);
     if (positionprecision == 0) {
 	for (i = 0; i < th.ngas; i++) {
-	    read_tipsy_standard_gas(&xdrs,&gp);
+	    read_tipsy_xdr_gas(&xdrs,&gp);
 	    indextot = i;
 	    if (index == indextot) {
 		fprintf(stdout,"r = (%+.6e, %+.6e, %+.6e) v = (%+.6e, %+.6e, %+.6e) m = %.6e eps = %.6e ID = %d  type: gas\n",
@@ -79,7 +79,7 @@ int main(int argc, char **argv) {
 		}
 	    }
 	for (i = 0; i < th.ndark; i++) {
-	    read_tipsy_standard_dark(&xdrs,&dp);
+	    read_tipsy_xdr_dark(&xdrs,&dp);
 	    indextot = th.ngas+i;
 	    if (index == indextot) {
 		fprintf(stdout,"r = (%+.6e, %+.6e, %+.6e) v = (%+.6e, %+.6e, %+.6e) m = %.6e eps = %.6e ID = %d type: dark\n",
@@ -88,7 +88,7 @@ int main(int argc, char **argv) {
 		}
 	    }
 	for (i = 0; i < th.nstar; i++) {
-	    read_tipsy_standard_star(&xdrs,&sp);
+	    read_tipsy_xdr_star(&xdrs,&sp);
 	    indextot = th.ngas+th.ndark+i;
 	    if (index == indextot) {
 		fprintf(stdout,"r = (%+.6e, %+.6e, %+.6e) v = (%+.6e, %+.6e, %+.6e) m = %.6e eps = %.6e ID = %d type: star\n",
@@ -99,7 +99,7 @@ int main(int argc, char **argv) {
 	}
     else if (positionprecision == 1) {
 	for (i = 0; i < th.ngas; i++) {
-	    read_tipsy_standard_gas_dpp(&xdrs,&gpdpp);
+	    read_tipsy_xdr_gas_dpp(&xdrs,&gpdpp);
 	    indextot = i;
 	    if (index == indextot) {
 		fprintf(stdout,"r = (%+.14e, %+.14e, %+.14e) v = (%+.6e, %+.6e, %+.6e) m = %.6e eps = %.6e ID = %d  type: gas\n",
@@ -108,7 +108,7 @@ int main(int argc, char **argv) {
 		}
 	    }
 	for (i = 0; i < th.ndark; i++) {
-	    read_tipsy_standard_dark_dpp(&xdrs,&dpdpp);
+	    read_tipsy_xdr_dark_dpp(&xdrs,&dpdpp);
 	    indextot = th.ngas+i;
 	    if (index == indextot) {
 		fprintf(stdout,"r = (%+.14e, %+.14e, %+.14e) v = (%+.6e, %+.6e, %+.6e) m = %.6e eps = %.6e ID = %d type: dark\n",
@@ -117,7 +117,7 @@ int main(int argc, char **argv) {
 		}
 	    }
 	for (i = 0; i < th.nstar; i++) {
-	    read_tipsy_standard_star_dpp(&xdrs,&spdpp);
+	    read_tipsy_xdr_star_dpp(&xdrs,&spdpp);
 	    if (index == indextot) {
 		fprintf(stdout,"r = (%+.14e, %+.14e, %+.14e) v = (%+.6e, %+.6e, %+.6e) m = %.6e eps = %.6e ID = %d type: star\n",
 			spdpp.pos[0],spdpp.pos[1],spdpp.pos[2],spdpp.vel[0],spdpp.vel[1],spdpp.vel[2],spdpp.mass,spdpp.eps,indextot+1);

@@ -37,9 +37,9 @@ int main(int argc, char **argv) {
     double sinphi, sintheta, sinpsi;
     double R[3][3], vin[3], vout[3], temp;
     TIPSY_HEADER th;
-    GAS_PARTICLE gp;
-    DARK_PARTICLE dp;
-    STAR_PARTICLE sp;
+    TIPSY_GAS_PARTICLE gp;
+    TIPSY_DARK_PARTICLE dp;
+    TIPSY_STAR_PARTICLE sp;
     XDR xdrsin, xdrsout;
 
     /*
@@ -180,16 +180,16 @@ int main(int argc, char **argv) {
     */
 
     xdrstdio_create(&xdrsin,stdin,XDR_DECODE);
-    read_tipsy_standard_header(&xdrsin,&th);
+    read_tipsy_xdr_header(&xdrsin,&th);
     xdrstdio_create(&xdrsout,stdout,XDR_ENCODE);
-    write_tipsy_standard_header(&xdrsout,&th);
+    write_tipsy_xdr_header(&xdrsout,&th);
 
     /*
     ** Add rotation to particles and write them out
     */
 
     for(i = 0; i < th.ngas; i++) {
-	read_tipsy_standard_gas(&xdrsin,&gp);
+	read_tipsy_xdr_gas(&xdrsin,&gp);
 	for(j = 0; j < 3; j++) {
 	    vin[j] = gp.pos[j];
 	    }
@@ -202,10 +202,10 @@ int main(int argc, char **argv) {
 	for(j = 0; j < 3; j++) {
 	    gp.vel[j] = vout[j];
 	    }
-	write_tipsy_standard_gas(&xdrsout,&gp);
+	write_tipsy_xdr_gas(&xdrsout,&gp);
 	}
     for(i = 0; i < th.ndark; i++) {
-	read_tipsy_standard_dark(&xdrsin,&dp);
+	read_tipsy_xdr_dark(&xdrsin,&dp);
 	for(j = 0; j < 3; j++) {
 	    vin[j] = dp.pos[j];
 	    }
@@ -218,10 +218,10 @@ int main(int argc, char **argv) {
 	for(j = 0; j < 3; j++) {
 	    dp.vel[j] = vout[j];
 	    }
-	write_tipsy_standard_dark(&xdrsout,&dp);
+	write_tipsy_xdr_dark(&xdrsout,&dp);
 	}
     for(i = 0; i < th.nstar; i++) {
-	read_tipsy_standard_star(&xdrsin,&sp);
+	read_tipsy_xdr_star(&xdrsin,&sp);
 	for(j = 0; j < 3; j++) {
 	    vin[j] = sp.pos[j];
 	    }
@@ -234,7 +234,7 @@ int main(int argc, char **argv) {
 	for(j = 0; j < 3; j++) {
 	    sp.vel[j] = vout[j];
 	    }
-	write_tipsy_standard_star(&xdrsout,&sp);
+	write_tipsy_xdr_star(&xdrsout,&sp);
 	}
 
     xdr_destroy(&xdrsin);
