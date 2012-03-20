@@ -19,7 +19,7 @@ void usage(void);
 int main(int argc, char **argv) {
 
     int i, j;
-    double dx1[3], dx2[3], dv1[3], dv2[3], ang1[3], ang2[3];
+    double dx1[3], dx2[3], dv1[3], dv2[3];
     FILE *fp1, *fp2;
     TIPSY_HEADER th1, th2, thout;
     TIPSY_GAS_PARTICLE gp;
@@ -39,8 +39,6 @@ int main(int argc, char **argv) {
 	dx2[j] = 0;
 	dv1[j] = 0;
 	dv2[j] = 0;
-	ang1[j] = 0;
-	ang2[j] = 0;
 	}
 
     /*

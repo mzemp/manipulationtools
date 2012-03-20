@@ -57,20 +57,20 @@ int main(int argc, char **argv) {
     int ltemp,ntemp,mtemp;
     int idummy;
     int Ntot,Ngrid,Lcurrent;
-    int Lmax,Ngap,Ngapsingle,Nbuffer,Nsmooth;
-    int Nsingle,Nneigh,Nsmoothaccept;
+    int Lmax,Ngap,Ngapsingle,Nbuffer;
+    int Nsingle;
     int Lgap;
     int verboselevel;
     int ***rl = NULL;
-    double meanlevel,fsmooth;
+    double meanlevel;
 
     verboselevel = 0;
     Lmax = 0;
     Ngap = 5;
     Ngapsingle = 2;
     Nbuffer = 3;
-    Nsmooth = 1;
-    Nsmoothaccept = 1;
+    /* Nsmooth = 1; */
+    /* Nsmoothaccept = 1; */
     Lgap = 2;
     inext = 0;
     jnext = 0;
@@ -130,8 +130,8 @@ int main(int argc, char **argv) {
             }
         }
     assert(Lmax >=0);
-    Nneigh = pow(2.0*Nsmooth+1.0,3.0)-1.0;
-    fsmooth = (Nneigh-Nsmoothaccept)/((double) Nneigh);
+    /* Nneigh = pow(2.0*Nsmooth+1.0,3.0)-1.0; */
+    /* fsmooth = (Nneigh-Nsmoothaccept)/((double) Nneigh); */
 
     /*
     ** Read in total number of particles and allocate & initialise array
