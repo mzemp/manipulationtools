@@ -18,62 +18,62 @@ void usage(void);
 
 int main(int argc, char **argv) {
 	
-    int i;
-    int shift, delta;
-    int minint, maxint;
-    int arrayselection;
-    int txtoutput, tsoutput, arrayfile;
-    int positionprecision;
-    int integerindex, floatindex, doubleindex, index;
+	int i;
+	int shift, delta;
+	int minint, maxint;
+	int arrayselection;
+	int txtoutput, tsoutput, arrayfile;
+	int positionprecision;
+	int integerindex, floatindex, doubleindex, index;
 	int writegas, writedark, writestar, ID;
-    double min, max;
-    char outname[100], tempname1[100], tempname2[100], arrayfilename[100];
-    TIPSY_HEADER thin, thout;
-    TIPSY_GAS_PARTICLE gp;
-    TIPSY_DARK_PARTICLE dp;
-    TIPSY_STAR_PARTICLE sp;
-    TIPSY_GAS_PARTICLE_DPP gpdpp;
-    TIPSY_DARK_PARTICLE_DPP dpdpp;
-    TIPSY_STAR_PARTICLE_DPP spdpp;
-    ARRAY_HEADER ahin, ahout;
-    ARRAY_PARTICLE ap;
-    FILE *fin1, *fin2, *fout1, *fout2;
-    XDR xdrsin1, xdrsin2, xdrsout1, xdrsout2;
+	double min, max;
+	char outname[100], tempname1[100], tempname2[100], arrayfilename[100];
+	TIPSY_HEADER thin, thout;
+	TIPSY_GAS_PARTICLE gp;
+	TIPSY_DARK_PARTICLE dp;
+	TIPSY_STAR_PARTICLE sp;
+	TIPSY_GAS_PARTICLE_DPP gpdpp;
+	TIPSY_DARK_PARTICLE_DPP dpdpp;
+	TIPSY_STAR_PARTICLE_DPP spdpp;
+	ARRAY_HEADER ahin, ahout;
+	ARRAY_PARTICLE ap;
+	FILE *fin1, *fin2, *fout1, *fout2;
+	XDR xdrsin1, xdrsin2, xdrsout1, xdrsout2;
 
-    minint = 0;
-    maxint = 0;
-    min = 0;
-    max = 0;
-    index = -1;
-    integerindex = 0;
-    floatindex = 0;
-    doubleindex = 0;
-    txtoutput = 0;
-    tsoutput = 1;
-    arrayfile = 0;
-    positionprecision = 0;
-    shift = 0;
-    delta = 1;
+	minint = 0;
+	maxint = 0;
+	min = 0;
+	max = 0;
+	index = -1;
+	integerindex = 0;
+	floatindex = 0;
+	doubleindex = 0;
+	txtoutput = 0;
+	tsoutput = 1;
+	arrayfile = 0;
+	positionprecision = 0;
+	shift = 0;
+	delta = 1;
 	writegas = 1;
 	writedark = 1;
 	writestar = 1;
-    fin1 = NULL;
-    fin2 = NULL;
-    fout1 = NULL;
-    fout2 = NULL;
-    /*
-    ** Read in arguments
-    */
-    i = 1;
-    while (i < argc) {
-        if (strcmp(argv[i],"-spp") == 0) {
-            positionprecision = 0;
-            i++;
-            }
-        else if (strcmp(argv[i],"-dpp") == 0) {
-            positionprecision = 1;
-            i++;
-            }
+	fin1 = NULL;
+	fin2 = NULL;
+	fout1 = NULL;
+	fout2 = NULL;
+	/*
+	** Read in arguments
+	*/
+	i = 1;
+	while (i < argc) {
+		if (strcmp(argv[i],"-spp") == 0) {
+			positionprecision = 0;
+			i++;
+			}
+		else if (strcmp(argv[i],"-dpp") == 0) {
+			positionprecision = 1;
+			i++;
+			}
 		else if (strcmp(argv[i],"-writegas") == 0) {
 			i++;
 			if (i >= argc) usage();
@@ -132,39 +132,39 @@ int main(int argc, char **argv) {
 				}
 			i++;
 			}
-        else if (strcmp(argv[i],"-o") == 0) {
-            i++;
-            if (i >= argc) usage();
-            strcpy(outname,argv[i]);
-            i++;
-            }
-        else if (strcmp(argv[i],"-index") == 0) {
-            i++;
-            if (i >= argc) usage();
-            if (strcmp(argv[i],"i") == 0) {
-                integerindex = 1;
-                }
-            else if (strcmp(argv[i],"f") == 0) {
-                floatindex = 1;
-                }
-            else if (strcmp(argv[i],"d") == 0) {
-                doubleindex = 1;
-                }
-            else {
-                usage();
-                }
-            i++;
-            if (i >= argc) usage();
-            index = atoi(argv[i])-1;
-            i++;
-            }
-        else if (strcmp(argv[i],"-array") == 0) {
-            i++;
-            if (i >= argc) usage();
-            arrayfile = 1;
-            strcpy(arrayfilename,argv[i]);
-            i++;
-            }
+		else if (strcmp(argv[i],"-o") == 0) {
+			i++;
+			if (i >= argc) usage();
+			strcpy(outname,argv[i]);
+			i++;
+			}
+		else if (strcmp(argv[i],"-index") == 0) {
+			i++;
+			if (i >= argc) usage();
+			if (strcmp(argv[i],"i") == 0) {
+				integerindex = 1;
+				}
+			else if (strcmp(argv[i],"f") == 0) {
+				floatindex = 1;
+				}
+			else if (strcmp(argv[i],"d") == 0) {
+				doubleindex = 1;
+				}
+			else {
+				usage();
+				}
+			i++;
+			if (i >= argc) usage();
+			index = atoi(argv[i])-1;
+			i++;
+			}
+		else if (strcmp(argv[i],"-array") == 0) {
+			i++;
+			if (i >= argc) usage();
+			arrayfile = 1;
+			strcpy(arrayfilename,argv[i]);
+			i++;
+			}
 		else if ((strcmp(argv[i],"-h") == 0) || (strcmp(argv[i],"-help") == 0)) {
 			usage();
 			}
@@ -172,18 +172,18 @@ int main(int argc, char **argv) {
 			usage();
 			}
 		}
-    if (integerindex == 1) {
+	if (integerindex == 1) {
 		minint = (int) min;
 		maxint = (int) max;
 		}
 
-    /*
-    ** Read & write particles
-    */
+	/*
+	** Read & write particles
+	*/
 
-    xdrstdio_create(&xdrsin1,stdin,XDR_DECODE);
-    read_tipsy_xdr_header(&xdrsin1,&thin);
-    if (txtoutput == 1) {
+	xdrstdio_create(&xdrsin1,stdin,XDR_DECODE);
+	read_tipsy_xdr_header(&xdrsin1,&thin);
+	if (txtoutput == 1) {
 		sprintf(tempname1,"%s.extract.txt",outname);
 		fout1 = fopen(tempname1,"w");
 		assert(fout1 != NULL);
@@ -195,7 +195,7 @@ int main(int argc, char **argv) {
 		thout.ndark = 0;
 		thout.nstar = 0;
 		}
-    else if (tsoutput == 1) {
+	else if (tsoutput == 1) {
 		/*
 		** Write out temporary file to be replaced later
 		*/
@@ -211,11 +211,11 @@ int main(int argc, char **argv) {
 		thout.nstar = 0;
 		write_tipsy_xdr_header(&xdrsout1,&thin);
 		}
-    if (arrayfile == 1) {
-        fin2 = fopen(arrayfilename,"r");
-        assert(fin2 != NULL);
-        xdrstdio_create(&xdrsin2,fin2,XDR_DECODE);
-        read_array_xdr_header(&xdrsin2,&ahin);
+	if (arrayfile == 1) {
+		fin2 = fopen(arrayfilename,"r");
+		assert(fin2 != NULL);
+		xdrstdio_create(&xdrsin2,fin2,XDR_DECODE);
+		read_array_xdr_header(&xdrsin2,&ahin);
 		assert(ahin.N[0] == thin.ntotal);
 		/*
 		** Write out temporary file to be replaced later
@@ -231,7 +231,7 @@ int main(int argc, char **argv) {
 		allocate_array_particle(&ahout,&ap);
 		write_array_xdr_header(&xdrsout2,&ahout);
 		}
-    if (positionprecision == 0) {
+	if (positionprecision == 0) {
 		for (i = 0; i < thin.ngas; i++) {
 			read_tipsy_xdr_gas(&xdrsin1,&gp);
 			arrayselection = 1;
@@ -344,7 +344,7 @@ int main(int argc, char **argv) {
 				}
 			}
 		}
-    else if (positionprecision == 1) {
+	else if (positionprecision == 1) {
 		for (i = 0; i < thin.ngas; i++) {
 			read_tipsy_xdr_gas_dpp(&xdrsin1,&gpdpp);
 			arrayselection = 1;
@@ -457,31 +457,31 @@ int main(int argc, char **argv) {
 				}
 			}
 		}
-    thout.ntotal = thout.ngas + thout.ndark + thout.nstar;
-    xdr_destroy(&xdrsin1);
-    if (txtoutput == 1) {
+	thout.ntotal = thout.ngas + thout.ndark + thout.nstar;
+	xdr_destroy(&xdrsin1);
+	if (txtoutput == 1) {
 		fclose(fout1);
 		}
-    else if (tsoutput == 1) {
+	else if (tsoutput == 1) {
 		xdr_destroy(&xdrsout1);
 		}
-    if (arrayfile == 1) {
+	if (arrayfile == 1) {
 		assert(thout.ntotal == ahout.N[0]);
 		xdr_destroy(&xdrsin2);
 		if (tsoutput == 1) {
 			xdr_destroy(&xdrsout2);
 			}
 		}
-    /*
-    ** Give some output
-    */
-    fprintf(stderr,"In:  %g %d %d %d %d\n",thin.time,thin.ntotal,thin.ngas,thin.ndark,thin.nstar);
-    fprintf(stderr,"Out: %g %d %d %d %d\n",thout.time,thout.ntotal,thout.ngas,thout.ndark,thout.nstar);
-    fprintf(stderr,"Array: min %g max %g\n",min,max);
-    /*
-    ** Now read temporary files again and correct header for tipsy standard output
-    */
-    if (tsoutput == 1) {
+	/*
+	** Give some output
+	*/
+	fprintf(stderr,"In:	 %g %d %d %d %d\n",thin.time,thin.ntotal,thin.ngas,thin.ndark,thin.nstar);
+	fprintf(stderr,"Out: %g %d %d %d %d\n",thout.time,thout.ntotal,thout.ngas,thout.ndark,thout.nstar);
+	fprintf(stderr,"Array: min %g max %g\n",min,max);
+	/*
+	** Now read temporary files again and correct header for tipsy standard output
+	*/
+	if (tsoutput == 1) {
 		fin1 = fopen(tempname1,"r");
 		assert(fin1 != NULL);
 		xdrstdio_create(&xdrsin1,fin1,XDR_DECODE);
@@ -535,8 +535,8 @@ int main(int argc, char **argv) {
 			fclose(fout2);
 			}
 		}
-    exit(0);
-    }
+	exit(0);
+	}
 
 void usage(void) {
 
@@ -544,20 +544,20 @@ void usage(void) {
 	fprintf(stderr,"Program extracts particles if the index i satisfies (i+shift) mod delta == 0\n");
 	fprintf(stderr,"and (optional) if the array value v of the particle satisfies: min <= v <= max.\n\n");
 	fprintf(stderr,"You can specify the following arguments:\n\n");
-	fprintf(stderr,"-spp               : set this flag if input and output file have single precision positions (default)\n");
-	fprintf(stderr,"-dpp               : set this flag if input and output file have double precision positions\n");
+	fprintf(stderr,"-spp			   : set this flag if input and output file have single precision positions (default)\n");
+	fprintf(stderr,"-dpp			   : set this flag if input and output file have double precision positions\n");
 	fprintf(stderr,"-writegas <value>  : 0 = don't write out gas / 1 = write out gas (default: 1)\n");
 	fprintf(stderr,"-writedark <value> : 0 = don't write out dark matter / 1 = write out dark matter (default: 1)\n");
 	fprintf(stderr,"-writestar <value> : 0 = don't write out stars / 1 = write out stars (default: 1)\n");
-	fprintf(stderr,"-shift <value>     : index shift (default: 0)\n");
-	fprintf(stderr,"-delta <value>     : index delta (default: 1)\n");
-	fprintf(stderr,"-array <name>      : array file\n");
+	fprintf(stderr,"-shift <value>	   : index shift (default: 0)\n");
+	fprintf(stderr,"-delta <value>	   : index delta (default: 1)\n");
+	fprintf(stderr,"-array <name>	   : array file\n");
 	fprintf(stderr,"-index <type><n>   : <type>: i (int), f (float) or d (double), <n> array index\n");
-	fprintf(stderr,"-min <value>       : min array value (default: 0)\n");	  
-	fprintf(stderr,"-max <value>       : max array value (default: 0)\n");	  
-	fprintf(stderr,"-format <type>     : output format <type>: txt or ts (default)\n");	  
-	fprintf(stderr,"-o <name>          : output file name base\n");	       
-	fprintf(stderr,"< <name>           : input file in tipsy standard binary format\n");
+	fprintf(stderr,"-min <value>	   : min array value (default: 0)\n");	  
+	fprintf(stderr,"-max <value>	   : max array value (default: 0)\n");	  
+	fprintf(stderr,"-format <type>	   : output format <type>: txt or ts (default)\n");	  
+	fprintf(stderr,"-o <name>		   : output file name base\n");		   
+	fprintf(stderr,"< <name>		   : input file in tipsy standard binary format\n");
 	fprintf(stderr,"\n");
 	exit(1);
-    }
+	}
