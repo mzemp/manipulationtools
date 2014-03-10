@@ -238,7 +238,7 @@ int main(int argc, char **argv) {
 		}
 
 	xdr_destroy(&xdrsin);
-	xdr_destroy(&xdrsout);	
+	xdr_destroy(&xdrsout);
 
 	fprintf(stderr,"Time: %g Ntotal: %d Ngas: %d Ndark: %d Nstar: %d Ndim: %d\n",
 		th.time,th.ntotal,th.ngas,th.ndark,th.nstar,th.ndim);
@@ -254,15 +254,15 @@ void usage(void) {
 	fprintf(stderr,"Internally, a zxz rotation is done but you can also provide zyz Euler angles by setting the -zyz flag\n");
 	fprintf(stderr,"and the code then converts it automatically to zxz rotation Euler angles.\n\n");
 	fprintf(stderr,"You can specify the following arguments:\n\n");
-	fprintf(stderr,"-zxz				  : set this flag if your Euler angles are for a zxz rotation (default)\n");
-	fprintf(stderr,"-zyz				  : set this flag if your Euler angles are for a zyz rotation\n");
-	fprintf(stderr,"-fwd				  : set this flag if your rotation is forwards (r => r''')\n");
-	fprintf(stderr,"-bwd				  : set this flag if your rotation is backwards (r''' => r) (default)\n");
-	fprintf(stderr,"-phi <value> <unit>	  : 1. Euler angle (default: 0 rad), <unit>: deg or rad (optional - default: rad)\n");
+	fprintf(stderr,"-zxz                  : set this flag if your Euler angles are for a zxz rotation (default)\n");
+	fprintf(stderr,"-zyz                  : set this flag if your Euler angles are for a zyz rotation\n");
+	fprintf(stderr,"-fwd                  : set this flag if your rotation is forwards (r => r''')\n");
+	fprintf(stderr,"-bwd                  : set this flag if your rotation is backwards (r''' => r) (default)\n");
+	fprintf(stderr,"-phi <value> <unit>   : 1. Euler angle (default: 0 rad), <unit>: deg or rad (optional - default: rad)\n");
 	fprintf(stderr,"-theta <value> <unit> : 2. Euler angle (default: 0 rad), <unit>: deg or rad (optional - default: rad)\n");
-	fprintf(stderr,"-psi <value> <unit>	  : 3. Euler angle (default: 0 rad), <unit>: deg or rad (optional - default: rad)\n");
-	fprintf(stderr,"< <name>			  : input file in tipsy standard binary format\n");
-	fprintf(stderr,"> <name>			  : output file in tipsy standard binary format\n");
+	fprintf(stderr,"-psi <value> <unit>   : 3. Euler angle (default: 0 rad), <unit>: deg or rad (optional - default: rad)\n");
+	fprintf(stderr,"< <name>              : input file in tipsy standard binary format\n");
+	fprintf(stderr,"> <name>              : output file in tipsy standard binary format\n");
 	fprintf(stderr,"\n");
 	exit(1);
 	}

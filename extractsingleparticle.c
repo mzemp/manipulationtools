@@ -73,7 +73,7 @@ int main(int argc, char **argv) {
 			read_tipsy_xdr_gas(&xdrs,&gp);
 			indextot = i;
 			if (index == indextot) {
-				fprintf(stdout,"r = (%+.6e, %+.6e, %+.6e) v = (%+.6e, %+.6e, %+.6e) m = %.6e eps = %.6e ID = %d	 type: gas\n",
+				fprintf(stdout,"r = (%+.6e, %+.6e, %+.6e) v = (%+.6e, %+.6e, %+.6e) m = %.6e eps = %.6e ID = %d type: gas\n",
 					gp.pos[0],gp.pos[1],gp.pos[2],gp.vel[0],gp.vel[1],gp.vel[2],gp.mass,gp.hsmooth,indextot+1);
 				exit(0);
 				}
@@ -102,7 +102,7 @@ int main(int argc, char **argv) {
 			read_tipsy_xdr_gas_dpp(&xdrs,&gpdpp);
 			indextot = i;
 			if (index == indextot) {
-				fprintf(stdout,"r = (%+.14e, %+.14e, %+.14e) v = (%+.6e, %+.6e, %+.6e) m = %.6e eps = %.6e ID = %d	type: gas\n",
+				fprintf(stdout,"r = (%+.14e, %+.14e, %+.14e) v = (%+.6e, %+.6e, %+.6e) m = %.6e eps = %.6e ID = %d type: gas\n",
 					gpdpp.pos[0],gpdpp.pos[1],gpdpp.pos[2],gpdpp.vel[0],gpdpp.vel[1],gpdpp.vel[2],gpdpp.mass,gpdpp.hsmooth,indextot+1);
 				exit(0);
 				}
@@ -133,8 +133,8 @@ void usage(void) {
 	fprintf(stderr,"\n");
 	fprintf(stderr,"Program extracts particles with index i and writes some info to stdout.\n\n");
 	fprintf(stderr,"You can specify the following arguments:\n\n");
-	fprintf(stderr,"-spp	   : set this flag if input and output file have single precision positions (default)\n");
-	fprintf(stderr,"-dpp	   : set this flag if input and output file have double precision positions\n");
+	fprintf(stderr,"-spp       : set this flag if input and output file have single precision positions (default)\n");
+	fprintf(stderr,"-dpp       : set this flag if input and output file have double precision positions\n");
 	fprintf(stderr,"-index <i> : particle index\n");
 	fprintf(stderr,"< <name>   : input file in tipsy standard binary format\n");
 	fprintf(stderr,"\n");

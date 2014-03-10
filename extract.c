@@ -475,7 +475,7 @@ int main(int argc, char **argv) {
 	/*
 	** Give some output
 	*/
-	fprintf(stderr,"In:	 %g %d %d %d %d\n",thin.time,thin.ntotal,thin.ngas,thin.ndark,thin.nstar);
+	fprintf(stderr,"In:  %g %d %d %d %d\n",thin.time,thin.ntotal,thin.ngas,thin.ndark,thin.nstar);
 	fprintf(stderr,"Out: %g %d %d %d %d\n",thout.time,thout.ntotal,thout.ngas,thout.ndark,thout.nstar);
 	fprintf(stderr,"Array: min %g max %g\n",min,max);
 	/*
@@ -544,20 +544,20 @@ void usage(void) {
 	fprintf(stderr,"Program extracts particles if the index i satisfies (i+shift) mod delta == 0\n");
 	fprintf(stderr,"and (optional) if the array value v of the particle satisfies: min <= v <= max.\n\n");
 	fprintf(stderr,"You can specify the following arguments:\n\n");
-	fprintf(stderr,"-spp			   : set this flag if input and output file have single precision positions (default)\n");
-	fprintf(stderr,"-dpp			   : set this flag if input and output file have double precision positions\n");
+	fprintf(stderr,"-spp               : set this flag if input and output file have single precision positions (default)\n");
+	fprintf(stderr,"-dpp               : set this flag if input and output file have double precision positions\n");
 	fprintf(stderr,"-writegas <value>  : 0 = don't write out gas / 1 = write out gas (default: 1)\n");
 	fprintf(stderr,"-writedark <value> : 0 = don't write out dark matter / 1 = write out dark matter (default: 1)\n");
 	fprintf(stderr,"-writestar <value> : 0 = don't write out stars / 1 = write out stars (default: 1)\n");
-	fprintf(stderr,"-shift <value>	   : index shift (default: 0)\n");
-	fprintf(stderr,"-delta <value>	   : index delta (default: 1)\n");
-	fprintf(stderr,"-array <name>	   : array file\n");
+	fprintf(stderr,"-shift <value>     : index shift (default: 0)\n");
+	fprintf(stderr,"-delta <value>     : index delta (default: 1)\n");
+	fprintf(stderr,"-array <name>      : array file\n");
 	fprintf(stderr,"-index <type><n>   : <type>: i (int), f (float) or d (double), <n> array index\n");
-	fprintf(stderr,"-min <value>	   : min array value (default: 0)\n");	  
-	fprintf(stderr,"-max <value>	   : max array value (default: 0)\n");	  
-	fprintf(stderr,"-format <type>	   : output format <type>: txt or ts (default)\n");	  
-	fprintf(stderr,"-o <name>		   : output file name base\n");		   
-	fprintf(stderr,"< <name>		   : input file in tipsy standard binary format\n");
+	fprintf(stderr,"-min <value>       : min array value (default: 0)\n");
+	fprintf(stderr,"-max <value>       : max array value (default: 0)\n");
+	fprintf(stderr,"-format <type>     : output format <type>: txt or ts (default)\n");
+	fprintf(stderr,"-o <name>          : output file name base\n");
+	fprintf(stderr,"< <name>           : input file in tipsy standard binary format\n");
 	fprintf(stderr,"\n");
 	exit(1);
 	}

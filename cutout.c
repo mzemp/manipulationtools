@@ -563,8 +563,8 @@ void usage(void) {
 	fprintf(stderr,"\n");
 	fprintf(stderr,"Cutout cuts out selected volume from input file.\n\n");
 	fprintf(stderr,"You can specify the following arguments:\n\n");
-	fprintf(stderr,"-spp		   : set this flag if input and output file have single precision positions (default)\n");
-	fprintf(stderr,"-dpp		   : set this flag if input and output file have double precision positions\n");
+	fprintf(stderr,"-spp           : set this flag if input and output file have single precision positions (default)\n");
+	fprintf(stderr,"-dpp           : set this flag if input and output file have double precision positions\n");
 	fprintf(stderr,"-rxcen <value> : x-coordinate of centre [LU] (default: 0 LU)\n");
 	fprintf(stderr,"-rycen <value> : y-coordinate of centre [LU] (default: 0 LU)\n");
 	fprintf(stderr,"-rzcen <value> : z-coordinate of centre [LU] (default: 0 LU)\n");
@@ -574,11 +574,11 @@ void usage(void) {
 	fprintf(stderr,"-drxo <value>  : outer box side length in x-direction [LU] (default: 0 LU)\n");
 	fprintf(stderr,"-dryo <value>  : outer box side length in y-direction [LU] (default: 0 LU)\n");
 	fprintf(stderr,"-drzo <value>  : outer box side length in z-direction [LU] (default: 0 LU)\n");
-	fprintf(stderr,"-ri <value>	   : inner shell radius [LU] (default: 0 LU)\n");
-	fprintf(stderr,"-ro <value>	   : outer shell radius [LU] (default: 0 LU)\n");
-	fprintf(stderr,"-inverse	   : invert the selection, i.e. everything outside the selected volume is written out\n");
-	fprintf(stderr,"-o <name>	   : output name\n");
-	fprintf(stderr,"< <name>	   : input file in tipsy standard binary format\n");
+	fprintf(stderr,"-ri <value>    : inner shell radius [LU] (default: 0 LU)\n");
+	fprintf(stderr,"-ro <value>    : outer shell radius [LU] (default: 0 LU)\n");
+	fprintf(stderr,"-inverse       : invert the selection, i.e. everything outside the selected volume is written out\n");
+	fprintf(stderr,"-o <name>      : output name\n");
+	fprintf(stderr,"< <name>       : input file in tipsy standard binary format\n");
 	fprintf(stderr,"\n");
 	exit(1);
 	}

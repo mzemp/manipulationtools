@@ -111,9 +111,9 @@ void usage(void) {
 	fprintf(stderr,"\n");
 	fprintf(stderr,"Please specify the following parameters:\n");
 	fprintf(stderr,"\n");
-	fprintf(stderr,"-LCell	 : Length of basic cell (default: 1)\n");
-	fprintf(stderr,"-NBox	 : Number of particles per box length (default: 256)\n");
-	fprintf(stderr,"-v		 : get a bit more details\n");
+	fprintf(stderr,"-LCell   : Length of basic cell (default: 1)\n");
+	fprintf(stderr,"-NBox    : Number of particles per box length (default: 256)\n");
+	fprintf(stderr,"-v       : get a bit more details\n");
 	fprintf(stderr,"> <name> : output file in tipsy standard binary format\n");
 	fprintf(stderr,"\n");
 	exit(1);

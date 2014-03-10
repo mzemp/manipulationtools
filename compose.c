@@ -245,7 +245,7 @@ int main(int argc, char **argv) {
 		}
 
 	xdr_destroy(&xdr1);
-	xdr_destroy(&xdr1);	   
+	xdr_destroy(&xdr1);
 	xdr_destroy(&xdrout);
 
 	fprintf(stderr,"Structure 1:\n");
@@ -271,8 +271,8 @@ void usage(void) {
 	fprintf(stderr,"Compose adds structures of two input files and shifts each structure by the specified\n");
 	fprintf(stderr,"distance and velocity shifts and writes an output.\n\n");
 	fprintf(stderr,"You can specify the following arguments:\n\n");
-	fprintf(stderr,"-f1 <name>	  : name of input file 1 (Tipsy standard binary)\n");
-	fprintf(stderr,"-f2 <name>	  : name of input file 2 (Tipsy standard binary)\n");
+	fprintf(stderr,"-f1 <name>    : name of input file 1 (Tipsy standard binary)\n");
+	fprintf(stderr,"-f2 <name>    : name of input file 2 (Tipsy standard binary)\n");
 	fprintf(stderr,"-drx1 <value> : position shift along x-axis for file 1 (default: 0 LU)\n");
 	fprintf(stderr,"-dry1 <value> : position shift along y-axis for file 1 (default: 0 LU)\n");
 	fprintf(stderr,"-drz1 <value> : position shift along z-axis for file 1 (default: 0 LU)\n");
@@ -285,7 +285,7 @@ void usage(void) {
 	fprintf(stderr,"-dvx2 <value> : velocity shift along x-axis for file 2 (default: 0 VU)\n");
 	fprintf(stderr,"-dvy2 <value> : velocity shift along y-axis for file 2 (default: 0 VU)\n");
 	fprintf(stderr,"-dvz2 <value> : velocity shift along z-axis for file 2 (default: 0 VU)\n");
-	fprintf(stderr,"> <name>	  : name of outputfile (Tipsy standard binary)\n");
+	fprintf(stderr,"> <name>      : name of outputfile (Tipsy standard binary)\n");
 	fprintf(stderr,"\n");
 	exit(1);
 	}

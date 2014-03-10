@@ -363,12 +363,12 @@ int main(int argc, char **argv) {
 
 	if (verboselevel >= 1) {
 		fprintf(stderr,"Used/resulting values:\n");
-		fprintf(stderr,"Lmax	   : %d\n",Lmax);
-		fprintf(stderr,"Ngap	   : %d\n",Ngap);
+		fprintf(stderr,"Lmax       : %d\n",Lmax);
+		fprintf(stderr,"Ngap       : %d\n",Ngap);
 		fprintf(stderr,"Ngapsingle : %d\n",Ngapsingle);
-		fprintf(stderr,"Nbuffer	   : %d\n",Nbuffer);
-		fprintf(stderr,"Lgap	   : %d\n",Lgap);
-		fprintf(stderr,"Nsingle	   : %d\n",Nsingle);
+		fprintf(stderr,"Nbuffer    : %d\n",Nbuffer);
+		fprintf(stderr,"Lgap       : %d\n",Lgap);
+		fprintf(stderr,"Nsingle    : %d\n",Nsingle);
 		}
 
 	exit(0);
@@ -381,14 +381,14 @@ void usage(void) {
 	fprintf(stderr,"\n");
 	fprintf(stderr,"Please specify the following parameters:\n");
 	fprintf(stderr,"\n");
-	fprintf(stderr,"-Lmax		: maximum refinement level\n");
-	fprintf(stderr,"-Ngap		: maximum size of gap that will be filled (default: 5)\n");
+	fprintf(stderr,"-Lmax       : maximum refinement level\n");
+	fprintf(stderr,"-Ngap       : maximum size of gap that will be filled (default: 5)\n");
 	fprintf(stderr,"-Ngapsingle : size of gap around particles to identify singles (default: 2)\n");
-	fprintf(stderr,"-Nbuffer	: size of each buffer zone around high-resolution particles (default: 3)\n");
-	fprintf(stderr,"-Lgap		: number of loops over gap removal process (default: 2)\n");
-	fprintf(stderr,"-v			: get a bit more details\n");
-	fprintf(stderr,"< <name>	: input file in ascii format\n");
-	fprintf(stderr,"> <name>	: output file in ascii format\n");
+	fprintf(stderr,"-Nbuffer    : size of each buffer zone around high-resolution particles (default: 3)\n");
+	fprintf(stderr,"-Lgap       : number of loops over gap removal process (default: 2)\n");
+	fprintf(stderr,"-v          : get a bit more details\n");
+	fprintf(stderr,"< <name>    : input file in ascii format\n");
+	fprintf(stderr,"> <name>    : output file in ascii format\n");
 	fprintf(stderr,"\n");
 	exit(1);
 	}

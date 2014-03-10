@@ -307,16 +307,16 @@ void usage(void) {
 	fprintf(stderr,"\n");
 	fprintf(stderr,"You can specify the following arguments:\n");
 	fprintf(stderr,"\n");
-	fprintf(stderr,"-spp			   : set this flag if input and output files have single precision positions (default)\n");
-	fprintf(stderr,"-dpp			   : set this flag if input and output files have double precision positions\n");
-	fprintf(stderr,"-stats <name>	   : stats file\n");
+	fprintf(stderr,"-spp               : set this flag if input and output files have single precision positions (default)\n");
+	fprintf(stderr,"-dpp               : set this flag if input and output files have double precision positions\n");
+	fprintf(stderr,"-stats <name>      : stats file\n");
 	fprintf(stderr,"-statistics <name> : statistics file\n");
-	fprintf(stderr,"-groups <name>	   : groups file\n");
-	fprintf(stderr,"-Lmax <value>	   : maximum refinement level for rt=0 case\n");
-	fprintf(stderr,"-rt <value>		   : refinement type: 0: high-resolution region given by d 1: particles have index according to distance to nearest group in units of rvir of that group (default: 0)\n");
-	fprintf(stderr,"-d <value>		   : size of high-resolution region in units of rvir (only for rt=0)\n");
-	fprintf(stderr,"< <name>		   : name of input file in tipsy standard binary format\n");
-	fprintf(stderr,"> <name>		   : name of output file in tipsy ascii array format\n");
+	fprintf(stderr,"-groups <name>     : groups file\n");
+	fprintf(stderr,"-Lmax <value>      : maximum refinement level for rt=0 case\n");
+	fprintf(stderr,"-rt <value>        : refinement type: 0: high-resolution region given by d 1: particles have index according to distance to nearest group in units of rvir of that group (default: 0)\n");
+	fprintf(stderr,"-d <value>         : size of high-resolution region in units of rvir (only for rt=0)\n");
+	fprintf(stderr,"< <name>           : name of input file in tipsy standard binary format\n");
+	fprintf(stderr,"> <name>           : name of output file in tipsy ascii array format\n");
 	fprintf(stderr,"\n");
 	exit(1);
 	}

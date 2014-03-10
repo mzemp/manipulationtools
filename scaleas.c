@@ -124,11 +124,11 @@ void usage(void) {
 	fprintf(stderr,"\n");
 	fprintf(stderr,"Please specify the following parameters:\n");
 	fprintf(stderr,"\n");
-	fprintf(stderr,"-shift <value>		  : value for shift\n");
-	fprintf(stderr,"-factor <value>		  : value for factor\n");
+	fprintf(stderr,"-shift <value>        : value for shift\n");
+	fprintf(stderr,"-factor <value>       : value for factor\n");
 	fprintf(stderr,"-index <type> <index> : <type>: i, f or d, index of array field\n");
-	fprintf(stderr,"< <name>			  : input file in standard binary format\n");
-	fprintf(stderr,"> <name>			  : output file in standard binary format\n");
+	fprintf(stderr,"< <name>              : input file in standard binary format\n");
+	fprintf(stderr,"> <name>              : output file in standard binary format\n");
 	fprintf(stderr,"\n");
 	exit(1);
 	}
