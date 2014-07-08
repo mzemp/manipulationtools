@@ -1,0 +1,43 @@
+DESCRIPTION
+
+This is a suite of several manipulation tools mainly for the Tipsy data format.
+
+
+AUTHOR
+
+Marcel Zemp <marcelzemp@gmail.com>
+
+
+OFFICIAL SOURCE
+
+GitHub: https://github.com/mzemp/manipulationtools
+
+
+DEPENDENCIES
+
+math library (should already be installed by default)
+iof library (https://github.com/mzemp/iof)
+
+
+COMPILATION
+
+First, make sure you have installed the iof library. The Makefile assumes that you have installed that in a local library path (e.g. ~/libraries/ under your home directory) and the following environment variable is set (e.g. in your .bashrc file):
+
+export LOCAL_LIB_PATH=~/libraries
+
+Then clone or download the code from GitHub. In order to compile the code just type make in the manipulationtools code directory:
+
+$> make
+
+This will generate all the manipulation tools.
+
+In order to clean up the code type:
+
+$> make clean
+
+
+HELP & OPTIONS
+
+For each tool you can find help and a list of all command line options by calling it with the -h option like, for example:
+
+$> compose -h
