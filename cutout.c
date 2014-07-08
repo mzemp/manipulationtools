@@ -1,7 +1,7 @@
 /* 
 ** cutout.c
 **
-** written by Marcel Zemp
+** Written by Marcel Zemp
 */
 
 #include <stdio.h>
@@ -19,7 +19,7 @@ void usage(void);
 int main(int argc, char **argv) {
 
 	int i, j;
-	int positionprecision, inverse;
+	int positionprecision, verboselevel, inverse;
 	double xcen[3], dx[3], dxi[3], dxo[3], r, ri, ro;
 	char outname[100], tempname1[100], tempname2[100];
 	TIPSY_HEADER thin, thout;
@@ -38,6 +38,7 @@ int main(int argc, char **argv) {
 	** Set default values
 	*/
 	positionprecision = 0;
+	verboselevel = 0;
 	inverse = 0;
 	for (j = 0; j < 3; j++) {
 		xcen[j] = 0;
@@ -53,6 +54,13 @@ int main(int argc, char **argv) {
 	*/
 	i = 1;
 	while (i < argc) {
+		if ((strcmp(argv[i],"-h") == 0) || (strcmp(argv[i],"-help") == 0)) {
+			usage();
+			}
+		if (strcmp(argv[i],"-version") == 0) {
+			fprintf(stderr,"%s (%s)\n",NAME,VERSION);
+			exit(1);
+			}
 		if (strcmp(argv[i],"-spp") == 0) {
 			positionprecision = 0;
 			i++;
@@ -63,89 +71,67 @@ int main(int argc, char **argv) {
 			}
 		else if (strcmp(argv[i],"-rxcen") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			xcen[0] = atof(argv[i]);
 			i++;
 			}
 		else if (strcmp(argv[i],"-rycen") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			xcen[1] = atof(argv[i]);
 			i++;
 			}
 		else if (strcmp(argv[i],"-rzcen") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			xcen[2] = atof(argv[i]);
 			i++;
 			}
 		else if (strcmp(argv[i],"-drxi") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			dxi[0] = atof(argv[i]);
 			i++;
 			}
 		else if (strcmp(argv[i],"-dryi") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			dxi[1] = atof(argv[i]);
 			i++;
 			}
 		else if (strcmp(argv[i],"-drzi") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			dxi[2] = atof(argv[i]);
 			i++;
 			}
 		else if (strcmp(argv[i],"-dxo") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			dxo[0] = atof(argv[i]);
 			i++;
 			}
 		else if (strcmp(argv[i],"-dryo") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			dxo[1] = atof(argv[i]);
 			i++;
 			}
 		else if (strcmp(argv[i],"-drzo") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			dxo[2] = atof(argv[i]);
 			i++;
 			}
 		else if (strcmp(argv[i],"-ri") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			ri = atof(argv[i]);
 			i++;
 			}
 		else if (strcmp(argv[i],"-ro") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			ro = atof(argv[i]);
 			i++;
 			}
@@ -155,14 +141,13 @@ int main(int argc, char **argv) {
 			}
 		else if (strcmp(argv[i],"-o") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			strcpy(outname,argv[i]);
 			i++;
 			}
-		else if ((strcmp(argv[i],"-h") == 0) || (strcmp(argv[i],"-help") == 0)) {
-			usage();
+		else if (strcmp(argv[i],"-verbose") == 0) {
+			verboselevel = 1;
+			i++;
 			}
 		else {
 			usage();
@@ -551,18 +536,24 @@ int main(int argc, char **argv) {
 	fclose(fin2);
 	fclose(fout1);
 	fclose(fout2);
-	fprintf(stderr,"Time: %g Ntotal: %d Ngas: %d Ndark: %d Nstar: %d Ndim: %d (input)\n",
-		thin.time,thin.ntotal,thin.ngas,thin.ndark,thin.nstar,thin.ndim);
-	fprintf(stderr,"Time: %g Ntotal: %d Ngas: %d Ndark: %d Nstar: %d Ndim: %d (output)\n",
-		thout.time,thout.ntotal,thout.ngas,thout.ndark,thout.nstar,thout.ndim);
+	if (verboselevel >= 0) {
+		fprintf(stderr,"Time: %g Ntotal: %d Ngas: %d Ndark: %d Nstar: %d Ndim: %d (input)\n",
+			thin.time,thin.ntotal,thin.ngas,thin.ndark,thin.nstar,thin.ndim);
+		fprintf(stderr,"Time: %g Ntotal: %d Ngas: %d Ndark: %d Nstar: %d Ndim: %d (output)\n",
+			thout.time,thout.ntotal,thout.ngas,thout.ndark,thout.nstar,thout.ndim);
+		}
 	exit(0);
 	}
 
 void usage(void) {
 
 	fprintf(stderr,"\n");
-	fprintf(stderr,"Cutout cuts out selected volume from input file.\n\n");
-	fprintf(stderr,"You can specify the following arguments:\n\n");
+	fprintf(stderr,"%s (%s)\n",NAME,VERSION);
+	fprintf(stderr,"\n");
+	fprintf(stderr,"Program cuts out selected volume from input file.\n");
+	fprintf(stderr,"\n");
+	fprintf(stderr,"You can specify the following arguments:\n");
+	fprintf(stderr,"\n");
 	fprintf(stderr,"-spp           : set this flag if input and output file have single precision positions (default)\n");
 	fprintf(stderr,"-dpp           : set this flag if input and output file have double precision positions\n");
 	fprintf(stderr,"-rxcen <value> : x-coordinate of centre [LU] (default: 0 LU)\n");
@@ -577,8 +568,14 @@ void usage(void) {
 	fprintf(stderr,"-ri <value>    : inner shell radius [LU] (default: 0 LU)\n");
 	fprintf(stderr,"-ro <value>    : outer shell radius [LU] (default: 0 LU)\n");
 	fprintf(stderr,"-inverse       : invert the selection, i.e. everything outside the selected volume is written out\n");
+	fprintf(stderr,"-verbose       : verbose\n");
 	fprintf(stderr,"-o <name>      : output name\n");
 	fprintf(stderr,"< <name>       : input file in tipsy standard binary format\n");
+	fprintf(stderr,"\n");
+	fprintf(stderr,"Other options:\n");
+	fprintf(stderr,"\n");
+	fprintf(stderr,"-h or -help : display this help and exit\n");
+	fprintf(stderr,"-version    : display version information and exit\n");
 	fprintf(stderr,"\n");
 	exit(1);
 	}

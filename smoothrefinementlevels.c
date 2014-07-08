@@ -1,7 +1,7 @@
 /* 
 ** smoothrefinementlevels.c
 **
-** written by Marcel Zemp
+** Written by Marcel Zemp
 */
 
 #include <stdio.h>
@@ -69,8 +69,6 @@ int main(int argc, char **argv) {
 	Ngap = 5;
 	Ngapsingle = 2;
 	Nbuffer = 3;
-	/* Nsmooth = 1; */
-	/* Nsmoothaccept = 1; */
 	Lgap = 2;
 	inext = 0;
 	jnext = 0;
@@ -78,60 +76,52 @@ int main(int argc, char **argv) {
 
 	i = 1;
 	while (i < argc) {
+		if ((strcmp(argv[i],"-h") == 0) || (strcmp(argv[i],"-help") == 0)) {
+			usage();
+			}
+		if (strcmp(argv[i],"-version") == 0) {
+			fprintf(stderr,"%s (%s)\n",NAME,VERSION);
+			exit(1);
+			}
 		if (strcmp(argv[i],"-Lmax") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			Lmax = atoi(argv[i]);
 			i++;
 			}
 		else if (strcmp(argv[i],"-Ngap") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			Ngap = atoi(argv[i]);
 			i++;
 			}
 		else if (strcmp(argv[i],"-Ngapsingle") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			Ngapsingle = atoi(argv[i]);
 			i++;
 			}
 		else if (strcmp(argv[i],"-Nbuffer") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			Nbuffer = atoi(argv[i]);
 			i++;
 			}
 		else if (strcmp(argv[i],"-Lgap") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			Lgap = atoi(argv[i]);
 			i++;
 			}
-		else if (strcmp(argv[i],"-v") == 0) {
+		else if (strcmp(argv[i],"-verbose") == 0) {
 			verboselevel = 1;
 			i++;
-			}
-		else if ((strcmp(argv[i],"-h") == 0) || (strcmp(argv[i],"-help") == 0)) {
-			usage();
 			}
 		else {
 			usage();
 			}
 		}
 	assert(Lmax >=0);
-	/* Nneigh = pow(2.0*Nsmooth+1.0,3.0)-1.0; */
-	/* fsmooth = (Nneigh-Nsmoothaccept)/((double) Nneigh); */
 
 	/*
 	** Read in total number of particles and allocate & initialise array
@@ -361,7 +351,7 @@ int main(int argc, char **argv) {
 	** Give some additonal output
 	*/
 
-	if (verboselevel >= 1) {
+	if (verboselevel > 0) {
 		fprintf(stderr,"Used/resulting values:\n");
 		fprintf(stderr,"Lmax       : %d\n",Lmax);
 		fprintf(stderr,"Ngap       : %d\n",Ngap);
@@ -377,6 +367,8 @@ int main(int argc, char **argv) {
 void usage(void) {
 
 	fprintf(stderr,"\n");
+	fprintf(stderr,"%s (%s)\n",NAME,VERSION);
+	fprintf(stderr,"\n");
 	fprintf(stderr,"Program converts array in ascii format to array in standard binary format.\n");
 	fprintf(stderr,"\n");
 	fprintf(stderr,"Please specify the following parameters:\n");
@@ -386,9 +378,14 @@ void usage(void) {
 	fprintf(stderr,"-Ngapsingle : size of gap around particles to identify singles (default: 2)\n");
 	fprintf(stderr,"-Nbuffer    : size of each buffer zone around high-resolution particles (default: 3)\n");
 	fprintf(stderr,"-Lgap       : number of loops over gap removal process (default: 2)\n");
-	fprintf(stderr,"-v          : get a bit more details\n");
+	fprintf(stderr,"-verbose    : verbose\n");
 	fprintf(stderr,"< <name>    : input file in ascii format\n");
 	fprintf(stderr,"> <name>    : output file in ascii format\n");
+	fprintf(stderr,"\n");
+	fprintf(stderr,"Other options:\n");
+	fprintf(stderr,"\n");
+	fprintf(stderr,"-h or -help : display this help and exit\n");
+	fprintf(stderr,"-version    : display version information and exit\n");
 	fprintf(stderr,"\n");
 	exit(1);
 	}

@@ -1,7 +1,7 @@
 /* 
 ** rotate.c
 **
-** written by Marcel Zemp
+** Written by Marcel Zemp
 */
 
 #include <stdio.h>
@@ -31,6 +31,7 @@ void MatrixMultiplication(double R[3][3], double vin[3], double vout[3]) {
 int main(int argc, char **argv) {
 
 	int i, j;
+	int verboselevel;
 	int rotmode, rotdir;
 	double phi, theta, psi;
 	double cosphi, costheta, cospsi;
@@ -46,6 +47,7 @@ int main(int argc, char **argv) {
 	** Set default values
 	*/
 
+	verboselevel = 0;
 	rotmode = 0; /* zxz = 0, zyz = 1 */
 	rotdir = 1; /* forward = 0 backward = 1 */
 	phi = 0;
@@ -58,6 +60,13 @@ int main(int argc, char **argv) {
 
 	i = 1;
 	while (i < argc) {
+		if ((strcmp(argv[i],"-h") == 0) || (strcmp(argv[i],"-help") == 0)) {
+			usage();
+			}
+		if (strcmp(argv[i],"-version") == 0) {
+			fprintf(stderr,"%s (%s)\n",NAME,VERSION);
+			exit(1);
+			}
 		if (strcmp(argv[i],"-zxz") == 0) {
 			rotmode = 0;
 			i++;
@@ -76,9 +85,7 @@ int main(int argc, char **argv) {
 			}
 		else if (strcmp(argv[i],"-phi") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			phi = atof(argv[i]);
 			i++;
 			if (i < argc) {
@@ -93,9 +100,7 @@ int main(int argc, char **argv) {
 			}
 		else if (strcmp(argv[i],"-theta") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			theta = atof(argv[i]);
 			i++;
 			if (i < argc) {
@@ -110,9 +115,7 @@ int main(int argc, char **argv) {
 			}
 		else if (strcmp(argv[i],"-psi") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			psi = atof(argv[i]);
 			i++;
 			if (i < argc) {
@@ -125,8 +128,9 @@ int main(int argc, char **argv) {
 					}
 				}
 			}
-		else if ((strcmp(argv[i],"-h") == 0) || (strcmp(argv[i],"-help") == 0)) {
-			usage();
+		else if (strcmp(argv[i],"-verbose") == 0) {
+			verboselevel = 1;
+			i++;
 			}
 		else {
 			usage();
@@ -240,20 +244,25 @@ int main(int argc, char **argv) {
 	xdr_destroy(&xdrsin);
 	xdr_destroy(&xdrsout);
 
-	fprintf(stderr,"Time: %g Ntotal: %d Ngas: %d Ndark: %d Nstar: %d Ndim: %d\n",
-		th.time,th.ntotal,th.ngas,th.ndark,th.nstar,th.ndim);
-	fprintf(stderr,"Angles for zxz rotation phi: %g rad theta: %g rad psi: %g rad\n",phi,theta,psi);
-
+	if (verboselevel > 0) {
+		fprintf(stderr,"Time: %g Ntotal: %d Ngas: %d Ndark: %d Nstar: %d Ndim: %d\n",
+			th.time,th.ntotal,th.ngas,th.ndark,th.nstar,th.ndim);
+		fprintf(stderr,"Angles for zxz rotation phi: %g rad theta: %g rad psi: %g rad\n",phi,theta,psi);
+		}
 	exit(0);
 	}
 
 void usage(void) {
 
 	fprintf(stderr,"\n");
-	fprintf(stderr,"This program rotates the input structure around (0,0,0) according to the Euler angles phi, theta, psi.\n");
+	fprintf(stderr,"%s (%s)\n",NAME,VERSION);
+	fprintf(stderr,"\n");
+	fprintf(stderr,"Program rotates the input structure around (0,0,0) according to the Euler angles phi, theta, psi.\n");
 	fprintf(stderr,"Internally, a zxz rotation is done but you can also provide zyz Euler angles by setting the -zyz flag\n");
-	fprintf(stderr,"and the code then converts it automatically to zxz rotation Euler angles.\n\n");
-	fprintf(stderr,"You can specify the following arguments:\n\n");
+	fprintf(stderr,"and the code then converts it automatically to zxz rotation Euler angles.\n");
+	fprintf(stderr,"\n");
+	fprintf(stderr,"You can specify the following arguments:\n");
+	fprintf(stderr,"\n");
 	fprintf(stderr,"-zxz                  : set this flag if your Euler angles are for a zxz rotation (default)\n");
 	fprintf(stderr,"-zyz                  : set this flag if your Euler angles are for a zyz rotation\n");
 	fprintf(stderr,"-fwd                  : set this flag if your rotation is forwards (r => r''')\n");
@@ -261,8 +270,14 @@ void usage(void) {
 	fprintf(stderr,"-phi <value> <unit>   : 1. Euler angle (default: 0 rad), <unit>: deg or rad (optional - default: rad)\n");
 	fprintf(stderr,"-theta <value> <unit> : 2. Euler angle (default: 0 rad), <unit>: deg or rad (optional - default: rad)\n");
 	fprintf(stderr,"-psi <value> <unit>   : 3. Euler angle (default: 0 rad), <unit>: deg or rad (optional - default: rad)\n");
+	fprintf(stderr,"-verbose              : verbose\n");
 	fprintf(stderr,"< <name>              : input file in tipsy standard binary format\n");
 	fprintf(stderr,"> <name>              : output file in tipsy standard binary format\n");
+	fprintf(stderr,"\n");
+	fprintf(stderr,"Other options:\n");
+	fprintf(stderr,"\n");
+	fprintf(stderr,"-h or -help : display this help and exit\n");
+	fprintf(stderr,"-version    : display version information and exit\n");
 	fprintf(stderr,"\n");
 	exit(1);
 	}

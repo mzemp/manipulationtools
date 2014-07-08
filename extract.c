@@ -1,7 +1,7 @@
 /* 
 ** extract.c
 **
-** written by Marcel Zemp
+** Written by Marcel Zemp
 */
 
 #include <stdio.h>
@@ -23,7 +23,7 @@ int main(int argc, char **argv) {
 	int minint, maxint;
 	int arrayselection;
 	int txtoutput, tsoutput, arrayfile;
-	int positionprecision;
+	int positionprecision, verboselevel;
 	int integerindex, floatindex, doubleindex, index;
 	int writegas, writedark, writestar, ID;
 	double min, max;
@@ -52,6 +52,7 @@ int main(int argc, char **argv) {
 	tsoutput = 1;
 	arrayfile = 0;
 	positionprecision = 0;
+	verboselevel = 0;
 	shift = 0;
 	delta = 1;
 	writegas = 1;
@@ -66,6 +67,13 @@ int main(int argc, char **argv) {
 	*/
 	i = 1;
 	while (i < argc) {
+		if ((strcmp(argv[i],"-h") == 0) || (strcmp(argv[i],"-help") == 0)) {
+			usage();
+			}
+		if (strcmp(argv[i],"-version") == 0) {
+			fprintf(stderr,"%s (%s)\n",NAME,VERSION);
+			exit(1);
+			}
 		if (strcmp(argv[i],"-spp") == 0) {
 			positionprecision = 0;
 			i++;
@@ -165,8 +173,9 @@ int main(int argc, char **argv) {
 			strcpy(arrayfilename,argv[i]);
 			i++;
 			}
-		else if ((strcmp(argv[i],"-h") == 0) || (strcmp(argv[i],"-help") == 0)) {
-			usage();
+		else if (strcmp(argv[i],"-verbose") == 0) {
+			verboselevel = 1;
+			i++;
 			}
 		else {
 			usage();
@@ -475,9 +484,11 @@ int main(int argc, char **argv) {
 	/*
 	** Give some output
 	*/
-	fprintf(stderr,"In:  %g %d %d %d %d\n",thin.time,thin.ntotal,thin.ngas,thin.ndark,thin.nstar);
-	fprintf(stderr,"Out: %g %d %d %d %d\n",thout.time,thout.ntotal,thout.ngas,thout.ndark,thout.nstar);
-	fprintf(stderr,"Array: min %g max %g\n",min,max);
+	if (verboselevel >= 0) {
+		fprintf(stderr,"In:  %g %d %d %d %d\n",thin.time,thin.ntotal,thin.ngas,thin.ndark,thin.nstar);
+		fprintf(stderr,"Out: %g %d %d %d %d\n",thout.time,thout.ntotal,thout.ngas,thout.ndark,thout.nstar);
+		fprintf(stderr,"Array: min %g max %g\n",min,max);
+		}
 	/*
 	** Now read temporary files again and correct header for tipsy standard output
 	*/
@@ -541,9 +552,13 @@ int main(int argc, char **argv) {
 void usage(void) {
 
 	fprintf(stderr,"\n");
+	fprintf(stderr,"%s (%s)\n",NAME,VERSION);
+	fprintf(stderr,"\n");
 	fprintf(stderr,"Program extracts particles if the index i satisfies (i+shift) mod delta == 0\n");
-	fprintf(stderr,"and (optional) if the array value v of the particle satisfies: min <= v <= max.\n\n");
-	fprintf(stderr,"You can specify the following arguments:\n\n");
+	fprintf(stderr,"and (optional) if the array value v of the particle satisfies: min <= v <= max.\n");
+	fprintf(stderr,"\n");
+	fprintf(stderr,"You can specify the following arguments:\n");
+	fprintf(stderr,"\n");
 	fprintf(stderr,"-spp               : set this flag if input and output file have single precision positions (default)\n");
 	fprintf(stderr,"-dpp               : set this flag if input and output file have double precision positions\n");
 	fprintf(stderr,"-writegas <value>  : 0 = don't write out gas / 1 = write out gas (default: 1)\n");
@@ -556,8 +571,14 @@ void usage(void) {
 	fprintf(stderr,"-min <value>       : min array value (default: 0)\n");
 	fprintf(stderr,"-max <value>       : max array value (default: 0)\n");
 	fprintf(stderr,"-format <type>     : output format <type>: txt or ts (default)\n");
+	fprintf(stderr,"-verbose           : verbose\n");
 	fprintf(stderr,"-o <name>          : output file name base\n");
 	fprintf(stderr,"< <name>           : input file in tipsy standard binary format\n");
+	fprintf(stderr,"\n");
+	fprintf(stderr,"Other options:\n");
+	fprintf(stderr,"\n");
+	fprintf(stderr,"-h or -help : display this help and exit\n");
+	fprintf(stderr,"-version    : display version information and exit\n");
 	fprintf(stderr,"\n");
 	exit(1);
 	}

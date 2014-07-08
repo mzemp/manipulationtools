@@ -1,7 +1,7 @@
 /* 
 ** compose.c
 **
-** written by Marcel Zemp
+** Written by Marcel Zemp
 */
 
 #include <stdio.h>
@@ -19,6 +19,7 @@ void usage(void);
 int main(int argc, char **argv) {
 
 	int i, j;
+	int verboselevel;
 	double dx1[3], dx2[3], dv1[3], dv2[3];
 	FILE *fp1, *fp2;
 	TIPSY_HEADER th1, th2, thout;
@@ -34,6 +35,7 @@ int main(int argc, char **argv) {
 	** Set default values
 	*/
 
+	verboselevel = 0;
 	for (j = 0; j < 3; j++) {
 		dx1[j] = 0;
 		dx2[j] = 0;
@@ -47,120 +49,100 @@ int main(int argc, char **argv) {
 
 	i = 1;
 	while (i < argc) {
+		if ((strcmp(argv[i],"-h") == 0) || (strcmp(argv[i],"-help") == 0)) {
+			usage();
+			}
+		if (strcmp(argv[i],"-version") == 0) {
+			fprintf(stderr,"%s (%s)\n",NAME,VERSION);
+			exit(1);
+			}
 		if (strcmp(argv[i],"-f1") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			fp1 = fopen(argv[i],"r");
 			i++;
 			}
 		else if (strcmp(argv[i],"-f2") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			fp2 = fopen(argv[i],"r");
 			i++;
 			}
 		else if (strcmp(argv[i],"-drx1") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			dx1[0] = atof(argv[i]);
 			i++;
 			}
 		else if (strcmp(argv[i],"-dry1") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			dx1[1] = atof(argv[i]);
 			i++;
 			}
 		else if (strcmp(argv[i],"-drz1") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			dx1[2] = atof(argv[i]);
 			i++;
 			}
 		else if (strcmp(argv[i],"-drx2") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			dx2[0] = atof(argv[i]);
 			i++;
 			}
 		else if (strcmp(argv[i],"-dry2") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			dx2[1] = atof(argv[i]);
 			i++;
 			}
 		else if (strcmp(argv[i],"-drz2") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			dx2[2] = atof(argv[i]);
 			i++;
 			}
 		else if (strcmp(argv[i],"-dvx1") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			dv1[0] = atof(argv[i]);
 			i++;
 			}
 		else if (strcmp(argv[i],"-dvy1") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			dv1[1] = atof(argv[i]);
 			i++;
 			}
 		else if (strcmp(argv[i],"-dvz1") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			dv1[2] = atof(argv[i]);
 			i++;
 			}
 		else if (strcmp(argv[i],"-dvx2") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			dv2[0] = atof(argv[i]);
 			i++;
 			}
 		else if (strcmp(argv[i],"-dvy2") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			dv2[1] = atof(argv[i]);
 			i++;
 			}
 		else if (strcmp(argv[i],"-dvz2") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			dv2[2] = atof(argv[i]);
 			i++;
 			}
-		else if ((strcmp(argv[i],"-h") == 0) || (strcmp(argv[i],"-help") == 0)) {
-			usage();
+		else if (strcmp(argv[i],"-verbose") == 0) {
+			verboselevel = 1;
+			i++;
 			}
 		else {
 			usage();
@@ -248,19 +230,21 @@ int main(int argc, char **argv) {
 	xdr_destroy(&xdr1);
 	xdr_destroy(&xdrout);
 
-	fprintf(stderr,"Structure 1:\n");
-	fprintf(stderr,"Time: %g Ntotal: %d Ngas: %d Ndark: %d Nstar: %d Ndim: %d\n",
-		th1.time,th1.ntotal,th1.ngas,th1.ndark,th1.nstar,th1.ndim);
-	fprintf(stderr,"(drx1,dry1,drz1) = (%g,%g,%g) LU / (dvx1,dvy1,dvz1) = (%g,%g,%g) VU\n",
-		dx1[0],dx1[1],dx1[2],dv1[0],dv1[1],dv1[2]);
-	fprintf(stderr,"Structure 2:\n");
-	fprintf(stderr,"Time: %g Ntotal: %d Ngas: %d Ndark: %d Nstar: %d Ndim: %d\n",
-		th2.time,th2.ntotal,th2.ngas,th2.ndark,th2.nstar,th2.ndim);
-	fprintf(stderr,"(drx2,dry2,drz2) = (%g,%g,%g) LU / (dvx2,dvy2,dvz2) = (%g,%g,%g) VU\n",
-		dx2[0],dx2[1],dx2[2],dv2[0],dv2[1],dv2[2]);
-	fprintf(stderr,"Output:\n");
-	fprintf(stderr,"Time: %g Ntotal: %d Ngas: %d Ndark: %d Nstar: %d Ndim: %d\n",
-		thout.time,thout.ntotal,thout.ngas,thout.ndark,thout.nstar,thout.ndim);
+	if (verboselevel >= 1) {
+		fprintf(stderr,"Structure 1:\n");
+		fprintf(stderr,"Time: %g Ntotal: %d Ngas: %d Ndark: %d Nstar: %d Ndim: %d\n",
+			th1.time,th1.ntotal,th1.ngas,th1.ndark,th1.nstar,th1.ndim);
+		fprintf(stderr,"(drx1,dry1,drz1) = (%g,%g,%g) LU / (dvx1,dvy1,dvz1) = (%g,%g,%g) VU\n",
+			dx1[0],dx1[1],dx1[2],dv1[0],dv1[1],dv1[2]);
+		fprintf(stderr,"Structure 2:\n");
+		fprintf(stderr,"Time: %g Ntotal: %d Ngas: %d Ndark: %d Nstar: %d Ndim: %d\n",
+			th2.time,th2.ntotal,th2.ngas,th2.ndark,th2.nstar,th2.ndim);
+		fprintf(stderr,"(drx2,dry2,drz2) = (%g,%g,%g) LU / (dvx2,dvy2,dvz2) = (%g,%g,%g) VU\n",
+			dx2[0],dx2[1],dx2[2],dv2[0],dv2[1],dv2[2]);
+		fprintf(stderr,"Output:\n");
+		fprintf(stderr,"Time: %g Ntotal: %d Ngas: %d Ndark: %d Nstar: %d Ndim: %d\n",
+			thout.time,thout.ntotal,thout.ngas,thout.ndark,thout.nstar,thout.ndim);
+		}
 
 	exit(0);
 	}
@@ -268,9 +252,13 @@ int main(int argc, char **argv) {
 void usage(void) {
 
 	fprintf(stderr,"\n");
-	fprintf(stderr,"Compose adds structures of two input files and shifts each structure by the specified\n");
-	fprintf(stderr,"distance and velocity shifts and writes an output.\n\n");
-	fprintf(stderr,"You can specify the following arguments:\n\n");
+	fprintf(stderr,"%s (%s)\n",NAME,VERSION);
+	fprintf(stderr,"\n");
+	fprintf(stderr,"Program adds structures of two input files and shifts each structure by the specified\n");
+	fprintf(stderr,"distance and velocity shifts and writes an output.\n");
+	fprintf(stderr,"\n");
+	fprintf(stderr,"You can specify the following arguments:\n");
+	fprintf(stderr,"\n");
 	fprintf(stderr,"-f1 <name>    : name of input file 1 (Tipsy standard binary)\n");
 	fprintf(stderr,"-f2 <name>    : name of input file 2 (Tipsy standard binary)\n");
 	fprintf(stderr,"-drx1 <value> : position shift along x-axis for file 1 (default: 0 LU)\n");
@@ -285,7 +273,13 @@ void usage(void) {
 	fprintf(stderr,"-dvx2 <value> : velocity shift along x-axis for file 2 (default: 0 VU)\n");
 	fprintf(stderr,"-dvy2 <value> : velocity shift along y-axis for file 2 (default: 0 VU)\n");
 	fprintf(stderr,"-dvz2 <value> : velocity shift along z-axis for file 2 (default: 0 VU)\n");
+	fprintf(stderr,"-verbose      : verbose\n");
 	fprintf(stderr,"> <name>      : name of outputfile (Tipsy standard binary)\n");
+	fprintf(stderr,"\n");
+	fprintf(stderr,"Other options:\n");
+	fprintf(stderr,"\n");
+	fprintf(stderr,"-h or -help : display this help and exit\n");
+	fprintf(stderr,"-version    : display version information and exit\n");
 	fprintf(stderr,"\n");
 	exit(1);
 	}

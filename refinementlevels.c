@@ -1,9 +1,7 @@
 /* 
 ** refinementlevels.c
 **
-** Program written in order to determine refinement levels
-**
-** written by Marcel Zemp
+** Written by Marcel Zemp
 */
 
 #include <stdio.h>
@@ -62,6 +60,13 @@ int main(int argc, char **argv) {
 	*/
 	i = 1;
 	while (i < argc) {
+		if ((strcmp(argv[i],"-h") == 0) || (strcmp(argv[i],"-help") == 0)) {
+			usage();
+			}
+		if (strcmp(argv[i],"-version") == 0) {
+			fprintf(stderr,"%s (%s)\n",NAME,VERSION);
+			exit(1);
+			}
 		if (strcmp(argv[i],"-spp") == 0) {
 			positionprecision = 0;
 			i++;
@@ -72,54 +77,39 @@ int main(int argc, char **argv) {
 			}
 		else if (strcmp(argv[i],"-statistics") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			strcpy(statisticsfilename,argv[i]);
 			i++;
 			}
 		else if (strcmp(argv[i],"-stats") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			strcpy(statsfilename,argv[i]);
 			i++;
 			}
 		else if (strcmp(argv[i],"-groups") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			strcpy(groupsfilename,argv[i]);
 			i++;
 			}
 		else if (strcmp(argv[i],"-rt") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			refinementtype = atoi(argv[i]);
 			i++;
 			}
 		else if (strcmp(argv[i],"-Lmax") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			Lmax = atoi(argv[i]);
 			i++;
 			}
 		else if (strcmp(argv[i],"-d") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			drvir= atof(argv[i]);
 			i++;
-			}
-		else if ((strcmp(argv[i],"-h") == 0) || (strcmp(argv[i],"-help") == 0)) {
-			usage();
 			}
 		else {
 			usage();
@@ -303,6 +293,8 @@ int main(int argc, char **argv) {
 void usage(void) {
 
 	fprintf(stderr,"\n");
+	fprintf(stderr,"%s (%s)\n",NAME,VERSION);
+	fprintf(stderr,"\n");
 	fprintf(stderr,"Program calculates the refinement levels of the particles.\n");
 	fprintf(stderr,"\n");
 	fprintf(stderr,"You can specify the following arguments:\n");
@@ -317,6 +309,11 @@ void usage(void) {
 	fprintf(stderr,"-d <value>         : size of high-resolution region in units of rvir (only for rt=0)\n");
 	fprintf(stderr,"< <name>           : name of input file in tipsy standard binary format\n");
 	fprintf(stderr,"> <name>           : name of output file in tipsy ascii array format\n");
+	fprintf(stderr,"\n");
+	fprintf(stderr,"Other options:\n");
+	fprintf(stderr,"\n");
+	fprintf(stderr,"-h or -help : display this help and exit\n");
+	fprintf(stderr,"-version    : display version information and exit\n");
 	fprintf(stderr,"\n");
 	exit(1);
 	}

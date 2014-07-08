@@ -1,7 +1,7 @@
 /* 
 ** creategrid.c
 **
-** written by Marcel Zemp
+** Written by Marcel Zemp
 */
 
 #include <stdio.h>
@@ -32,28 +32,28 @@ int main(int argc, char **argv) {
 
 	i = 1;
 	while (i < argc) {
+		if ((strcmp(argv[i],"-h") == 0) || (strcmp(argv[i],"-help") == 0)) {
+			usage();
+			}
+		if (strcmp(argv[i],"-version") == 0) {
+			fprintf(stderr,"%s (%s)\n",NAME,VERSION);
+			exit(1);
+			}
 		if (strcmp(argv[i],"-LCell") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			LCell = atof(argv[i]);
 			i++;
 			}
 		else if (strcmp(argv[i],"-NBox") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			NBox = atoi(argv[i]);
 			i++;
 			}
-		else if (strcmp(argv[i],"-v") == 0) {
+		else if (strcmp(argv[i],"-verbose") == 0) {
 			verboselevel = 1;
 			i++;
-			}
-		else if ((strcmp(argv[i],"-h") == 0) || (strcmp(argv[i],"-help") == 0)) {
-			usage();
 			}
 		else {
 			usage();
@@ -73,15 +73,15 @@ int main(int argc, char **argv) {
 	write_tipsy_xdr_header(&xdrs,&th);
 
 	/*
-	** Go through particles and find gaps in high-resolution region
+	** Go through particles
 	*/
 
 	for (k = 0; k < NBox; k++) {
 		for (j = 0; j < NBox; j++) {
 			for (i = 0; i < NBox; i++) {
-				dp.pos[0] = LCell/2.0 + i*LCell;
-				dp.pos[1] = LCell/2.0 + j*LCell;
-				dp.pos[2] = LCell/2.0 + k*LCell;
+				dp.pos[0] = 0.5*LCell + i*LCell;
+				dp.pos[1] = 0.5*LCell + j*LCell;
+				dp.pos[2] = 0.5*LCell + k*LCell;
 				dp.mass = 1;
 				dp.eps = 1;
 				dp.phi = 1;
@@ -92,7 +92,7 @@ int main(int argc, char **argv) {
 	xdr_destroy(&xdrs);
 
 	/*
-	** Give some additonal output
+	** Give some additional output
 	*/
 
 	if (verboselevel >= 1) {
@@ -107,14 +107,22 @@ int main(int argc, char **argv) {
 void usage(void) {
 
 	fprintf(stderr,"\n");
-	fprintf(stderr,"Program writes out perfect grid of dark matter particles.\n");
+	fprintf(stderr,"%s (%s)\n",NAME,VERSION);
+	fprintf(stderr,"\n");
+	fprintf(stderr,"Program writes out perfect grid of dark matter particles where\n");
+	fprintf(stderr,"the particles are located in the centre of the cells.\n");
 	fprintf(stderr,"\n");
 	fprintf(stderr,"Please specify the following parameters:\n");
 	fprintf(stderr,"\n");
-	fprintf(stderr,"-LCell   : Length of basic cell (default: 1)\n");
-	fprintf(stderr,"-NBox    : Number of particles per box length (default: 256)\n");
-	fprintf(stderr,"-v       : get a bit more details\n");
+	fprintf(stderr,"-LCell   : Length of basic cell for 1 particle (default: 1)\n");
+	fprintf(stderr,"-NBox    : Number of particles in interval [0..NBox*LCell] (default: 256)\n");
+	fprintf(stderr,"-verbose : verbose\n");
 	fprintf(stderr,"> <name> : output file in tipsy standard binary format\n");
+	fprintf(stderr,"\n");
+	fprintf(stderr,"Other options:\n");
+	fprintf(stderr,"\n");
+	fprintf(stderr,"-h or -help : display this help and exit\n");
+	fprintf(stderr,"-version    : display version information and exit\n");
 	fprintf(stderr,"\n");
 	exit(1);
 	}

@@ -1,7 +1,7 @@
 /* 
 ** scaleas.c
 **
-** written by Marcel Zemp
+** Written by Marcel Zemp
 */
 
 #include <stdio.h>
@@ -16,6 +16,7 @@ void usage(void);
 int main(int argc, char **argv) {
 
 	int i;
+	int verboselevel;
 	int shiftint, factorint;
 	int integerindex, floatindex, doubleindex, index;
 	double shift, factor;
@@ -23,6 +24,7 @@ int main(int argc, char **argv) {
 	ARRAY_PARTICLE ap;
 	XDR xdrsin, xdrsout;
 
+	verboselevel = 0;
 	index = -1;
 	integerindex = 0;
 	floatindex = 0;
@@ -33,27 +35,28 @@ int main(int argc, char **argv) {
 	factor = 1;
 	i = 1;
 	while (i < argc) {
+		if ((strcmp(argv[i],"-h") == 0) || (strcmp(argv[i],"-help") == 0)) {
+			usage();
+			}
+		if (strcmp(argv[i],"-version") == 0) {
+			fprintf(stderr,"%s (%s)\n",NAME,VERSION);
+			exit(1);
+			}
 		if (strcmp(argv[i],"-shift") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			shift = atof(argv[i]);
 			i++;
 			}
 		else if (strcmp(argv[i],"-factor") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			factor = atof(argv[i]);
 			i++;
 			}
 		else if (strcmp(argv[i],"-index") == 0) {
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			if (strcmp(argv[i],"i") == 0) {
 				integerindex = 1;
 				}
@@ -67,14 +70,13 @@ int main(int argc, char **argv) {
 				usage();
 				}
 			i++;
-			if (i >= argc) {
-				usage();
-				}
+			if (i >= argc) usage();
 			index = atoi(argv[i])-1;
 			i++;
 			}
-		else if ((strcmp(argv[i],"-h") == 0) || (strcmp(argv[i],"-help") == 0)) {
-			usage();
+		else if (strcmp(argv[i],"-verbose") == 0) {
+			verboselevel = 1;
+			i++;
 			}
 		else {
 			usage();
@@ -105,13 +107,15 @@ int main(int argc, char **argv) {
 		}
 	xdr_destroy(&xdrsin);
 	xdr_destroy(&xdrsout);
-	fprintf(stderr,"Ntotal: %d Ni: %d Nf: %d Nd: %d\n",
-		ah.N[0],ah.N[1],ah.N[2],ah.N[3]);
-	if (integerindex == 1) {
-		fprintf(stderr,"shift: %d factor: %d\n",shiftint,factorint);
-		}
-	else {
-		fprintf(stderr,"shift: %g factor: %g\n",shift,factor);
+	if (verboselevel > 0) {
+		fprintf(stderr,"Ntotal: %d Ni: %d Nf: %d Nd: %d\n",
+			ah.N[0],ah.N[1],ah.N[2],ah.N[3]);
+		if (integerindex == 1) {
+			fprintf(stderr,"shift: %d factor: %d\n",shiftint,factorint);
+			}
+		else {
+			fprintf(stderr,"shift: %g factor: %g\n",shift,factor);
+			}
 		}
 	exit(0);
 	}
@@ -119,16 +123,23 @@ int main(int argc, char **argv) {
 void usage(void) {
 
 	fprintf(stderr,"\n");
+	fprintf(stderr,"%s (%s)\n",NAME,VERSION);
+	fprintf(stderr,"\n");
 	fprintf(stderr,"Program performes the following scaling on the array values v_old:\n");
 	fprintf(stderr,"v_new = factor * (v_old + shift)\n");
 	fprintf(stderr,"\n");
 	fprintf(stderr,"Please specify the following parameters:\n");
 	fprintf(stderr,"\n");
-	fprintf(stderr,"-shift <value>        : value for shift\n");
-	fprintf(stderr,"-factor <value>       : value for factor\n");
+	fprintf(stderr,"-shift <value>        : value for shift (default: 0)\n");
+	fprintf(stderr,"-factor <value>       : value for factor (default: 1)\n");
 	fprintf(stderr,"-index <type> <index> : <type>: i, f or d, index of array field\n");
 	fprintf(stderr,"< <name>              : input file in standard binary format\n");
 	fprintf(stderr,"> <name>              : output file in standard binary format\n");
+	fprintf(stderr,"\n");
+	fprintf(stderr,"Other options:\n");
+	fprintf(stderr,"\n");
+	fprintf(stderr,"-h or -help : display this help and exit\n");
+	fprintf(stderr,"-version    : display version information and exit\n");
 	fprintf(stderr,"\n");
 	exit(1);
 	}
