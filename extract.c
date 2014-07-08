@@ -484,7 +484,7 @@ int main(int argc, char **argv) {
 	/*
 	** Give some output
 	*/
-	if (verboselevel >= 0) {
+	if (verboselevel > 0) {
 		fprintf(stderr,"In:  %g %d %d %d %d\n",thin.time,thin.ntotal,thin.ngas,thin.ndark,thin.nstar);
 		fprintf(stderr,"Out: %g %d %d %d %d\n",thout.time,thout.ntotal,thout.ngas,thout.ndark,thout.nstar);
 		fprintf(stderr,"Array: min %g max %g\n",min,max);

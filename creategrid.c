@@ -95,7 +95,7 @@ int main(int argc, char **argv) {
 	** Give some additional output
 	*/
 
-	if (verboselevel >= 1) {
+	if (verboselevel > 0) {
 		fprintf(stderr,"Used values:\n");
 		fprintf(stderr,"LCell : %.6e\n",LCell);
 		fprintf(stderr,"NBox  : %d\n",NBox);

@@ -93,7 +93,7 @@ int main(int argc, char **argv) {
 			}
 		}
 	xdr_destroy(&xdrs);
-	if (verboselevel >= 0) {
+	if (verboselevel > 0) {
 		fprintf(stderr,"Time: %g Ntotal: %d Ngas: %d Ndark: %d Nstar: %d\n",
 			th.time,th.ntotal,th.ngas,th.ndark,th.nstar);
 		}

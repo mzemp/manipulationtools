@@ -536,7 +536,7 @@ int main(int argc, char **argv) {
 	fclose(fin2);
 	fclose(fout1);
 	fclose(fout2);
-	if (verboselevel >= 0) {
+	if (verboselevel > 0) {
 		fprintf(stderr,"Time: %g Ntotal: %d Ngas: %d Ndark: %d Nstar: %d Ndim: %d (input)\n",
 			thin.time,thin.ntotal,thin.ngas,thin.ndark,thin.nstar,thin.ndim);
 		fprintf(stderr,"Time: %g Ntotal: %d Ngas: %d Ndark: %d Nstar: %d Ndim: %d (output)\n",

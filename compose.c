@@ -230,7 +230,7 @@ int main(int argc, char **argv) {
 	xdr_destroy(&xdr1);
 	xdr_destroy(&xdrout);
 
-	if (verboselevel >= 1) {
+	if (verboselevel > 0) {
 		fprintf(stderr,"Structure 1:\n");
 		fprintf(stderr,"Time: %g Ntotal: %d Ngas: %d Ndark: %d Nstar: %d Ndim: %d\n",
 			th1.time,th1.ntotal,th1.ngas,th1.ndark,th1.nstar,th1.ndim);
