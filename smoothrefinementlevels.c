@@ -353,6 +353,7 @@ int main(int argc, char **argv) {
 
 	if (verboselevel > 0) {
 		fprintf(stderr,"Used/resulting values:\n");
+		fprintf(stderr,"\n");
 		fprintf(stderr,"Lmax       : %d\n",Lmax);
 		fprintf(stderr,"Ngap       : %d\n",Ngap);
 		fprintf(stderr,"Ngapsingle : %d\n",Ngapsingle);
